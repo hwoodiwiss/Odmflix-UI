@@ -3,13 +3,16 @@
   "version": "1.0.0",
   "description": "Odmflix-UI for Uni ODM project",
   "scripts": {
-    "start": "cross-env NODE_ENV=development parcel serve ./src/index.html",
+    "start": "cross-env NODE_ENV=local parcel serve ./src/index.html",
+    "start:dev": "cross-env NODE_ENV=local parcel serve ./src/index.html",
     "start:prod": "cross-env NODE_ENV=production parcel serve ./src/index.html",
     "dev": "parcel ./src/index.html",
     "prebuild": "npx rimraf dist",
+    "prebuild:dev": "npx rimraf dist",
     "prebuild:prod": "npx rimraf dist",
     "clean": "npx rimraf dist",
-    "build": "cross-env NODE_ENV=development parcel build ./src/index.html",
+    "build": "cross-env NODE_ENV=local parcel build ./src/index.html",
+    "build:dev": "cross-env NODE_ENV=development parcel build ./src/index.html",
     "build:prod": "cross-env NODE_ENV=production parcel build ./src/index.html --no-source-maps"
   },
   "author": "Hugo Woodiwiss",

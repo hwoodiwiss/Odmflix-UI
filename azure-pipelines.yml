@@ -20,7 +20,7 @@ stages:
             displayName: Checkout Source
           - script: yarn install --frozen-lockfile
             displayName: Install using yarn with frozen lockfile
-          - script: yarn build
+          - script: yarn build:dev
             displayName: Build Dev Using Parcel
           - task: PublishPipelineArtifact@1
             displayName: Publish Build
