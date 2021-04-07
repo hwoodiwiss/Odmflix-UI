@@ -28,7 +28,7 @@ stages:
               targetPath: "$(System.DefaultWorkingDirectory)/dist"
               artifact: dist-dev
               publishLocation: pipeline
-          - script: yarn build
+          - script: yarn build:prod
             displayName: Build Prod Using Parcel
           - task: PublishPipelineArtifact@1
             displayName: Publish Build
