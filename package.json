@@ -4,10 +4,12 @@
   "description": "Odmflix-UI for Uni ODM project",
   "scripts": {
     "start": "parcel serve ./src/index.html",
+    "start:prod": "cross-env NODE_ENV=production parcel serve ./src/index.html",
     "dev": "parcel ./src/index.html",
     "prebuild": "npx rimraf dist",
     "clean": "npx rimraf dist",
-    "build": "parcel build ./src/index.html"
+    "build": "parcel build ./src/index.html",
+    "build:prod": "cross-env NODE_ENV=production parcel build ./src/index.html --no-source-maps"
   },
   "author": "Hugo Woodiwiss",
   "license": "MIT",
@@ -16,7 +18,9 @@
     "@types/bootstrap": "^5.0.12",
     "@types/google.visualization": "^0.0.64",
     "@types/jquery": "^3.5.5",
+    "@types/node": "^14.14.37",
     "bootstrap": "^5.0.0-beta3",
+    "cross-env": "^7.0.3",
     "google-charts": "^2.0.0",
     "jquery": "^3.6.0",
     "parcel": "^2.0.0-beta.2",

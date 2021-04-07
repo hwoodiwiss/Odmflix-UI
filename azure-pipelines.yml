@@ -21,12 +21,20 @@ stages:
           - script: yarn install --frozen-lockfile
             displayName: Install using yarn with frozen lockfile
           - script: yarn build
-            displayName: Build Using Parcel
+            displayName: Build Dev Using Parcel
           - task: PublishPipelineArtifact@1
             displayName: Publish Build
             inputs:
               targetPath: "$(System.DefaultWorkingDirectory)/dist"
-              artifact: dist
+              artifact: dist-dev
+              publishLocation: pipeline
+          - script: yarn build
+            displayName: Build Prod Using Parcel
+          - task: PublishPipelineArtifact@1
+            displayName: Publish Build
+            inputs:
+              targetPath: "$(System.DefaultWorkingDirectory)/dist"
+              artifact: dist-prod
               publishLocation: pipeline
 
   - stage: DeployDev
@@ -43,7 +51,7 @@ stages:
             displayName: Download Dev Build
             inputs:
               source: current
-              artifact: dist
+              artifact: dist-dev
               targetPath: $(Pipeline.Workspace)/wapp
           - task: FtpUpload@2
             displayName: Upload To Plesk
@@ -73,7 +81,7 @@ stages:
             displayName: Download Prod Build
             inputs:
               source: current
-              artifact: dist
+              artifact: dist-prod
               targetPath: $(Pipeline.Workspace)/wapp
           - task: FtpUpload@2
             displayName: Upload To Plesk
