@@ -10,7 +10,7 @@ export function getConfig(): Config {
     };
   } else {
     config = {
-      ApiUri: "http://localhost:1234",
+      ApiUri: "http://localhost:8000",
     };
   }
 
