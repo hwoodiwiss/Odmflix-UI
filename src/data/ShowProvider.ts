@@ -11,12 +11,12 @@ export class ShowProvider extends Provider {
   }
 
   public ById(id: number) {
-    return this.fetchJson(`${this.ApiUri}/Show/ById?id=${id}`, "GET").then<Show>((data) => data);
+    return this.fetchJson(`${this.ApiUri}/Show/ById?id=${id}`).then<Show>((data) => data);
   }
 
   public ByTypeName(typeName: string) {
-    return this.fetchJson(`${this.ApiUri}/Show/ByTypeName?typeName=${typeName}`, "GET").then<
-      Show[]
-    >((data) => data);
+    return this.fetchJson(`${this.ApiUri}/Show/ByTypeName?typeName=${typeName}`).then<Show[]>(
+      (data) => data
+    );
   }
 }
