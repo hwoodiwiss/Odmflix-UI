@@ -1,6 +1,6 @@
 import "../import-jquery";
 import { Config } from "../environment";
-import { Show } from "./Show";
+import { Show } from "../models";
 import { Provider } from "./Provider";
 
 export class ShowProvider extends Provider {
