@@ -16,7 +16,6 @@ export class PieChartElement<T> extends Chart<T, google.visualization.PieChartOp
       }
       return row;
     });
-    console.log(targetId);
     document.getElementById(targetId).appendChild(this.element);
     let dataTable = google.visualization.arrayToDataTable([headers, ...dataTableData], false);
     let chart = new google.visualization.PieChart(this.chartElement);
