@@ -1,6 +1,10 @@
 import { ApiError, ApiErrorType } from "./ApiError";
 
 export abstract class Provider {
+  protected ApiRoute: string;
+  constructor(ApiUri: string, ApiRoute: string) {
+    this.ApiRoute = `${ApiUri}/${ApiRoute}`;
+  }
   protected fetchJson(endpoint: string, init?: RequestInit) {
     return fetch(endpoint, init)
       .then((response) => {

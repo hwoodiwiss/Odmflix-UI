@@ -43,7 +43,7 @@ export abstract class Chart<T, Opt> {
 
   public render(targetId: string, options: Opt) {
     google.charts.load("visualization", 1, {
-      packages: ["corechart"],
+      packages: ["corechart", "map"],
       callback: this.drawChart.bind(this, targetId, options),
     });
   }
