@@ -1,10 +1,10 @@
 import { Chart } from "./chart";
 
 export class PieChartElement<T> extends Chart<T, google.visualization.PieChartOptions> {
-  constructor(id: string, title: string, data: T[]) {
-    super(id, title, data);
+  constructor(id: string, title: string, data: T[], options: google.visualization.PieChartOptions) {
+    super(id, title, data, options);
   }
-  protected drawChart(targetId: string, options: google.visualization.PieChartOptions) {
+  protected drawChart(targetId: string) {
     if (!this.data || this.data.length === 0) {
       throw new Error("Data Error drawing chart");
     }
@@ -19,6 +19,6 @@ export class PieChartElement<T> extends Chart<T, google.visualization.PieChartOp
     document.getElementById(targetId).appendChild(this.element);
     let dataTable = google.visualization.arrayToDataTable([headers, ...dataTableData], false);
     let chart = new google.visualization.PieChart(this.chartElement);
-    chart.draw(dataTable, options);
+    chart.draw(dataTable, this.options);
   }
 }

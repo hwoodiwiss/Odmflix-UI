@@ -1,10 +1,16 @@
-export abstract class Chart<T, Opt> {
+export interface IChart {
+  id: string;
+  render: (targetId: string) => void;
+}
+
+export abstract class Chart<T, Opt> implements IChart {
   protected element: HTMLDivElement;
   protected chartElement: HTMLDivElement;
   constructor(
     public readonly id: string,
     title: string,
     protected data: Array<T>,
+    protected options: Opt,
     public readonly cardId = `card_container_${id}`,
     public readonly chartId = `card_chart_${id}`
   ) {
@@ -41,12 +47,12 @@ export abstract class Chart<T, Opt> {
     return element;
   }
 
-  public render(targetId: string, options: Opt) {
+  public render(targetId: string) {
     google.charts.load("visualization", 1, {
       packages: ["corechart", "map"],
-      callback: this.drawChart.bind(this, targetId, options),
+      callback: this.drawChart.bind(this, targetId),
     });
   }
 
-  protected abstract drawChart(targetId: string, options: Opt);
+  protected abstract drawChart(targetId: string);
 }

@@ -1,15 +1,12 @@
 import bootstrap from "bootstrap";
 import "./import-jquery";
 import "../scss/custom.scss";
-import { PieChartElement } from "./charts";
-import { Show } from "./models";
-import { ShowProvider, TypeProvider } from "./data";
+import { ShowTypeContent } from "./content";
 import { getConfig } from "./environment";
 
-interface ToppingCount {
-  Topping: string;
-  Slices: number;
-}
-
 //Things to do on startup
-$(async () => {});
+$(async () => {
+  const config = getConfig();
+  const showTypeContent = new ShowTypeContent(config);
+  showTypeContent.render("main");
+});

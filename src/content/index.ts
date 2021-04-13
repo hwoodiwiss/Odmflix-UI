@@ -1,0 +1,1 @@
+export { ShowTypeContent } from "./ShowTypeContent";
