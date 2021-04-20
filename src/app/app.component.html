@@ -1,16 +1,35 @@
 <div class="content">
-  <nav class="navbar navbar-dark bg-dark">
-    <div class="container">
+  <nav class="navbar navbar-expand navbar-dark bg-dark">
+    <span class="navbar-brand">
       <img
         src="./assets/netflix.svg"
-        alt="The netflix logo i dun stole"
+        alt="The netflix logo"
         width="40"
         height="40"
-      />
-      <span class="navbar-brand">Odmflix</span>
+      />Odmflix</span
+    >
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a [routerLink]="['']" class="nav-link">Home</a>
+        </li>
+        <li class="nav-item">
+          <a [routerLink]="['/Test']" class="nav-link">Link</a>
+        </li>
+      </ul>
     </div>
   </nav>
-
   <main id="main" role="main" class="container">
     <router-outlet></router-outlet>
   </main>
