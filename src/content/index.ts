@@ -1,1 +1,0 @@
-export { ShowTypeContent } from "./ShowTypeContent";
