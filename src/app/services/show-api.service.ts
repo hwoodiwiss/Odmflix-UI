@@ -2,6 +2,8 @@ import { Inject, Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Show } from "../models/show";
 import { AppConfig, APP_CONFIG } from "../app.config";
+import { CountryCount } from "../models/country-count";
+import { ByYear } from "../models/by-year";
 
 @Injectable({
   providedIn: "root",
@@ -30,5 +32,11 @@ export class ShowApiService {
 
   public all() {
     return this.httpClient.get<Show[]>(`${this.config.ApiUri}/Show/All`);
+  }
+
+  public byCountryByYear() {
+    return this.httpClient.get<ByYear<CountryCount>>(
+      `${this.config.ApiUri}/Show/ByCountryByYear?typeId=1`
+    );
   }
 }

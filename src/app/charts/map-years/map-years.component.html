@@ -1,0 +1,12 @@
+<div *ngIf="data !== null">
+  <ofui-map-chart [valueMapper]="datumFrameValue(thingIndex)"></ofui-map-chart>
+  <input
+    type="range"
+    [min]="rangeMin"
+    [max]="rangeMax"
+    [(ngModel)]="rangeModel"
+    (ngModelChange)="nextNearest($event)"
+  />
+  <h3>{{ rangeVal }}</h3>
+  <button (click)="startAnimation()">Play</button>
+</div>

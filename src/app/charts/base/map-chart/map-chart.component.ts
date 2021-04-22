@@ -37,7 +37,6 @@ export class MapChartComponent implements AfterViewInit, OnChanges {
         data,
         data.objects.countries
       ) as any).features;
-      console.log(this.countries);
       this.chart = new Chart(this.chartElement.nativeElement, {
         type: "choropleth",
         data: {
