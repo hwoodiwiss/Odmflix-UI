@@ -24,6 +24,7 @@ export class MapChartComponent implements AfterViewInit, OnChanges {
   constructor(private geoData: GeoDataService) {}
   ngOnChanges(changes: SimpleChanges): void {
     if (this.chart) {
+      this.chart.data.labels = this.countries.map((d) => d.properties.name);
       this.chart.data.datasets[0].data = this.countries.map((d) => ({
         feature: d,
         value: this.valueMapper(d),
