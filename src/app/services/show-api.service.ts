@@ -34,9 +34,9 @@ export class ShowApiService {
     return this.httpClient.get<Show[]>(`${this.config.ApiUri}/Show/All`);
   }
 
-  public byCountryByYear() {
+  public byCountryByYearCount() {
     return this.httpClient.get<ByYear<CountryCount>>(
-      `${this.config.ApiUri}/Show/ByCountryByYear?typeId=1`
+      `${this.config.ApiUri}/Show/ByCountryByYearCount?typeId=1`
     );
   }
 }
