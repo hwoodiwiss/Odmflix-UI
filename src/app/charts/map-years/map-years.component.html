@@ -1,5 +1,8 @@
-<div *ngIf="data !== null">
-  <ofui-map-chart [valueMapper]="datumFrameValue(thingIndex)"></ofui-map-chart>
+<div *ngIf="data !== null" class="row">
+  <ofui-map-chart
+    [valueMapper]="datumFrameValue(thingIndex)"
+    [showLabels]="!animating"
+  ></ofui-map-chart>
   <input
     type="range"
     [min]="rangeMin"
@@ -8,5 +11,10 @@
     (ngModelChange)="nextNearest($event)"
   />
   <h3>{{ rangeVal }}</h3>
-  <button (click)="startAnimation()">Play</button>
+  <button *ngIf="!animating" (click)="startAnimation()" class="btn btn-success">
+    <fa-icon [icon]="faPlay"></fa-icon>
+  </button>
+  <button *ngIf="animating" (click)="animating = false" class="btn btn-warning">
+    <fa-icon [icon]="faPause"></fa-icon>
+  </button>
 </div>

@@ -1,4 +1,7 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, Inject, Input, OnInit } from "@angular/core";
+import { faPause, faPlay } from "@fortawesome/free-solid-svg-icons";
+import { Observable } from "rxjs";
+import { COUNTRIES_MAP } from "src/app/countries.map";
 import { ByYear } from "src/app/models/by-year";
 import { CountryCount } from "src/app/models/country-count";
 import { ShowApiService } from "src/app/services/show-api.service";
@@ -9,6 +12,10 @@ import { ShowApiService } from "src/app/services/show-api.service";
   styleUrls: ["./map-years.component.scss"],
 })
 export class MapYearsComponent implements OnInit {
+  faPlay = faPlay;
+  faPause = faPause;
+
+  @Input() dataSource: Observable<ByYear<CountryCount>>;
   data?: ByYear<CountryCount>;
   years: number[];
   rangeMin = 0;
@@ -16,15 +23,18 @@ export class MapYearsComponent implements OnInit {
   thingIndex = 0;
   rangeModel = 0;
   rangeVal = 0;
+  animating = false;
 
-  namesMap = new Map<string, string>();
-
-  constructor(private showApi: ShowApiService) {
+  constructor(@Inject(COUNTRIES_MAP) private namesMap: Map<string, string>) {
     this.data = null;
-    this.namesMap.set("Soviet Union", "Russia");
   }
+
   ngOnInit(): void {
-    this.showApi.byCountryByYearCount().subscribe((d) => {
+    console.log(this.dataSource);
+
+    this.dataSource.subscribe((d) => {
+      console.log(d);
+
       this.years = Object.keys(d)
         .map((year) => +year)
         .sort((a, b) => {
@@ -78,16 +88,21 @@ export class MapYearsComponent implements OnInit {
   }
 
   startAnimation() {
-    this.rangeVal = this.rangeMin;
+    if (this.rangeVal == this.rangeMax) {
+      this.rangeVal = this.rangeMin;
+    }
+    this.animating = true;
     this.animateFrame();
   }
 
   animateFrame() {
-    if (this.rangeVal < this.rangeMax) {
+    if (this.rangeVal < this.rangeMax && this.animating) {
       setTimeout(() => {
         this.nextNearest(this.rangeVal + 1);
         this.animateFrame();
       }, 500);
+    } else {
+      this.animating = false;
     }
   }
 }

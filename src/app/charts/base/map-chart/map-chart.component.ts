@@ -19,12 +19,15 @@ import { topojson } from "chartjs-chart-geo";
 export class MapChartComponent implements AfterViewInit, OnChanges {
   @ViewChild("chartCanvas") chartElement: ElementRef<HTMLCanvasElement>;
   @Input() valueMapper: (datum: GeoJSON.Feature<GeoJSON.Geometry>) => number;
+  @Input() showLabels: boolean = true;
   chart: Chart;
   countries: GeoJSON.Feature<GeoJSON.Geometry>[];
   constructor(private geoData: GeoDataService) {}
   ngOnChanges(changes: SimpleChanges): void {
     if (this.chart) {
-      this.chart.data.labels = this.countries.map((d) => d.properties.name);
+      this.chart.data.labels = this.showLabels
+        ? this.countries.map((d) => d.properties.name)
+        : null;
       this.chart.data.datasets[0].data = this.countries.map((d) => ({
         feature: d,
         value: this.valueMapper(d),

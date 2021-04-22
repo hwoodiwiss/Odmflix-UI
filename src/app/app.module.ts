@@ -11,6 +11,9 @@ import { MapChartComponent } from "./charts/base/map-chart/map-chart.component";
 import { HttpClientModule } from "@angular/common/http";
 import { FormsModule } from "@angular/forms";
 import { MapYearsComponent } from "./charts/map-years/map-years.component";
+import { CountriesPageComponent } from './countries-page/countries-page.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { YearsPageComponent } from './years-page/years-page.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +23,8 @@ import { MapYearsComponent } from "./charts/map-years/map-years.component";
     TestChartComponent,
     MapChartComponent,
     MapYearsComponent,
+    CountriesPageComponent,
+    YearsPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -27,6 +32,7 @@ import { MapYearsComponent } from "./charts/map-years/map-years.component";
     NgbModule,
     HttpClientModule,
     FormsModule,
+    FontAwesomeModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
