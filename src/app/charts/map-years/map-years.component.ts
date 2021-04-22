@@ -24,7 +24,7 @@ export class MapYearsComponent implements OnInit {
     this.namesMap.set("Soviet Union", "Russia");
   }
   ngOnInit(): void {
-    this.showApi.byCountryByYear().subscribe((d) => {
+    this.showApi.byCountryByYearCount().subscribe((d) => {
       this.years = Object.keys(d)
         .map((year) => +year)
         .sort((a, b) => {
@@ -57,10 +57,6 @@ export class MapYearsComponent implements OnInit {
 
       return +(countryVal?.Count ?? 0);
     };
-  }
-
-  datumValueMapper(datum: GeoJSON.Feature<GeoJSON.Geometry>) {
-    return (datum.properties.name as string).length;
   }
 
   nextNearest(evt: any) {
