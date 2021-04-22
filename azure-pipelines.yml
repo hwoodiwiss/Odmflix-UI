@@ -25,7 +25,7 @@ stages:
           - task: PublishPipelineArtifact@1
             displayName: Publish Build
             inputs:
-              targetPath: "$(System.DefaultWorkingDirectory)/dist/odmflix-ui"
+              targetPath: "$(System.DefaultWorkingDirectory)/dist/Odmflix-UI"
               artifact: dist-dev
               publishLocation: pipeline
           - script: yarn build:prod
@@ -33,7 +33,7 @@ stages:
           - task: PublishPipelineArtifact@1
             displayName: Publish Build
             inputs:
-              targetPath: "$(System.DefaultWorkingDirectory)/dist/odmflix-ui"
+              targetPath: "$(System.DefaultWorkingDirectory)/dist/Odmflix-UI"
               artifact: dist-prod
               publishLocation: pipeline
 
