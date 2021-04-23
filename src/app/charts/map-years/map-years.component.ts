@@ -12,10 +12,12 @@ import { faPause, faPlay } from "@fortawesome/free-solid-svg-icons";
 import { COUNTRIES_MAP } from "src/app/countries.map";
 import { ByYear } from "src/app/models/by-year";
 import { CountryCount } from "src/app/models/country-count";
+import { MapSelection } from "../base/map-chart/map-chart.component";
 
-export interface MapSelection {
+export interface MapYearSelection {
   year: number;
   country: string;
+  showIds: number[];
 }
 
 @Component({
@@ -29,7 +31,7 @@ export class MapYearsComponent implements OnInit, OnChanges {
 
   @Input() data?: ByYear<CountryCount>;
 
-  @Output() onFeatureClick = new EventEmitter<MapSelection>();
+  @Output() onFeatureClick = new EventEmitter<MapYearSelection>();
 
   years: number[];
   rangeMin = 0;
@@ -84,7 +86,7 @@ export class MapYearsComponent implements OnInit, OnChanges {
           : countryCount.Country;
         return datumName.search(searchTerm) > -1;
       });
-
+      datum.properties.ShowIds = countryVal?.ShowIds;
       return +(countryVal?.Count ?? 0);
     };
   }
@@ -123,7 +125,11 @@ export class MapYearsComponent implements OnInit, OnChanges {
     }
   }
 
-  bubbleEvent(clickedItems: string[]) {
-    this.onFeatureClick.emit({ year: this.rangeVal, country: clickedItems[0] });
+  bubbleEvent(clickedItems: MapSelection[]) {
+    this.onFeatureClick.emit({
+      year: this.rangeVal,
+      country: clickedItems[0].country,
+      showIds: clickedItems[0].showIds,
+    });
   }
 }

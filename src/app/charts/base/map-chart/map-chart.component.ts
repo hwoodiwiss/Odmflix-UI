@@ -13,6 +13,11 @@ import { GeoDataService } from "src/app/services/geo-data.service";
 import { Chart } from "chart.js";
 import { GeoFeature, topojson } from "chartjs-chart-geo";
 
+export interface MapSelection {
+  country: string;
+  showIds: number[];
+}
+
 @Component({
   selector: "ofui-map-chart",
   templateUrl: "./map-chart.component.html",
@@ -21,7 +26,7 @@ import { GeoFeature, topojson } from "chartjs-chart-geo";
 export class MapChartComponent implements AfterViewInit, OnChanges {
   @ViewChild("chartCanvas") chartElement: ElementRef<HTMLCanvasElement>;
   @Input() valueMapper: (datum: GeoJSON.Feature<GeoJSON.Geometry>) => number;
-  @Output() onFeatureClick = new EventEmitter<string[]>();
+  @Output() onFeatureClick = new EventEmitter<MapSelection[]>();
 
   chart: Chart;
   countries: GeoJSON.Feature<GeoJSON.Geometry>[];
@@ -83,7 +88,10 @@ export class MapChartComponent implements AfterViewInit, OnChanges {
 
       let clickedFeats = interactionItems.map((item) => {
         if (item?.element instanceof GeoFeature) {
-          return item.element.feature.properties.name as string;
+          return {
+            country: item.element.feature.properties.name as string,
+            showIds: item.element.feature.properties.ShowIds as number[],
+          };
         }
         return null;
       });

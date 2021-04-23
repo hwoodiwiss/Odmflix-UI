@@ -19,6 +19,14 @@ export class ShowApiService {
       `${this.config.ApiUri}/Show/ById?id=${id}`
     );
   }
+
+  public byIds(ids: number[]) {
+    return this.httpClient.post<Show[]>(
+      `${this.config.ApiUri}/Show/ByIds`,
+      ids
+    );
+  }
+
   public byTypeId(id: number) {
     return this.httpClient.get<Show[]>(
       `${this.config.ApiUri}/Show/ByType?id=${id}`

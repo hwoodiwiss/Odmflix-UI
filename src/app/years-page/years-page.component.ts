@@ -1,6 +1,7 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, Inject, OnInit } from "@angular/core";
 import { Observable } from "rxjs";
-import { MapSelection } from "../charts/map-years/map-years.component";
+import { MapYearSelection } from "../charts/map-years/map-years.component";
+import { REVERSE_COUNTRIES_MAP } from "../countries.map";
 import { ByYear } from "../models/by-year";
 import { CountryCount } from "../models/country-count";
 import { Type } from "../models/type";
@@ -17,7 +18,11 @@ export class YearsPageComponent implements OnInit {
   currentTypeId?: string;
   mapYearsData: ByYear<CountryCount>;
 
-  constructor(public showApi: ShowApiService, public typeApi: TypeApiService) {
+  constructor(
+    public showApi: ShowApiService,
+    public typeApi: TypeApiService,
+    @Inject(REVERSE_COUNTRIES_MAP) private namesMap: Map<string, string>
+  ) {
     this.currentTypeId = null;
   }
 
@@ -41,5 +46,9 @@ export class YearsPageComponent implements OnInit {
       });
   }
 
-  handleFeatureSelected(selection: MapSelection) {}
+  handleFeatureSelected(selection: MapYearSelection) {
+    this.showApi.byIds(selection.showIds).subscribe((data) => {
+      console.log(data);
+    });
+  }
 }

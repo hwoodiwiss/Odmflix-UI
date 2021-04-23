@@ -17,6 +17,7 @@ import { YearsPageComponent } from './years-page/years-page.component';
 import { PieChartComponent } from './charts/base/pie-chart/pie-chart.component';
 import { BarChartComponent } from './charts/base/bar-chart/bar-chart.component';
 import { PolarRadiusChartComponent } from './charts/base/polar-radius-chart/polar-radius-chart.component';
+import { YearCountryDataComponent } from './years-page/year-country-data/year-country-data.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { PolarRadiusChartComponent } from './charts/base/polar-radius-chart/pola
     PieChartComponent,
     BarChartComponent,
     PolarRadiusChartComponent,
+    YearCountryDataComponent,
   ],
   imports: [
     BrowserModule,
