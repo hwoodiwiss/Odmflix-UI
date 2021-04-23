@@ -1,13 +1,14 @@
 import {
   Component,
+  EventEmitter,
   Inject,
   Input,
   OnChanges,
   OnInit,
+  Output,
   SimpleChanges,
 } from "@angular/core";
 import { faPause, faPlay } from "@fortawesome/free-solid-svg-icons";
-import { Observable } from "rxjs";
 import { COUNTRIES_MAP } from "src/app/countries.map";
 import { ByYear } from "src/app/models/by-year";
 import { CountryCount } from "src/app/models/country-count";
@@ -22,6 +23,12 @@ export class MapYearsComponent implements OnInit, OnChanges {
   faPause = faPause;
 
   @Input() data?: ByYear<CountryCount>;
+
+  @Output() onFeatureClick = new EventEmitter<{
+    year: number;
+    country: string;
+  }>();
+
   years: number[];
   rangeMin = 0;
   rangeMax = 0;
@@ -68,11 +75,11 @@ export class MapYearsComponent implements OnInit, OnChanges {
     return (datum: GeoJSON.Feature<GeoJSON.Geometry>) => {
       let yearVals = this.data[index];
 
-      let countryVal = yearVals.find((f) => {
+      let countryVal = yearVals.find((countryCount) => {
         const datumName = datum.properties.name as string;
-        const searchTerm = this.namesMap.has(f.Country)
-          ? this.namesMap[f.Country]
-          : f.Country;
+        const searchTerm = this.namesMap.has(countryCount.Country)
+          ? this.namesMap[countryCount.Country]
+          : countryCount.Country;
         return datumName.search(searchTerm) > -1;
       });
 
@@ -112,5 +119,9 @@ export class MapYearsComponent implements OnInit, OnChanges {
     } else {
       this.animating = false;
     }
+  }
+
+  bubbleEvent(clickedItems: string[]) {
+    this.onFeatureClick.emit({ year: this.rangeVal, country: clickedItems[0] });
   }
 }

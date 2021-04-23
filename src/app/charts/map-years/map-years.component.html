@@ -1,7 +1,7 @@
 <div *ngIf="initialized" class="row">
   <ofui-map-chart
     [valueMapper]="datumFrameValue(thingIndex)"
-    [showLabels]="!animating"
+    (onFeatureClick)="bubbleEvent($event)"
   ></ofui-map-chart>
   <input
     type="range"

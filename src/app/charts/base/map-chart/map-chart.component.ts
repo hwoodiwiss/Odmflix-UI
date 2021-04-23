@@ -2,14 +2,16 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  EventEmitter,
   Input,
   OnChanges,
+  Output,
   SimpleChanges,
   ViewChild,
 } from "@angular/core";
 import { GeoDataService } from "src/app/services/geo-data.service";
 import { Chart } from "chart.js";
-import { topojson } from "chartjs-chart-geo";
+import { GeoFeature, topojson } from "chartjs-chart-geo";
 
 @Component({
   selector: "ofui-map-chart",
@@ -19,15 +21,13 @@ import { topojson } from "chartjs-chart-geo";
 export class MapChartComponent implements AfterViewInit, OnChanges {
   @ViewChild("chartCanvas") chartElement: ElementRef<HTMLCanvasElement>;
   @Input() valueMapper: (datum: GeoJSON.Feature<GeoJSON.Geometry>) => number;
-  @Input() showLabels: boolean = true;
+  @Output() onFeatureClick = new EventEmitter<string[]>();
+
   chart: Chart;
   countries: GeoJSON.Feature<GeoJSON.Geometry>[];
   constructor(private geoData: GeoDataService) {}
   ngOnChanges(changes: SimpleChanges): void {
     if (this.chart) {
-      this.chart.data.labels = this.showLabels
-        ? this.countries.map((d) => d.properties.name)
-        : null;
       this.chart.data.datasets[0].data = this.countries.map((d) => ({
         feature: d,
         value: this.valueMapper(d),
@@ -60,7 +60,6 @@ export class MapChartComponent implements AfterViewInit, OnChanges {
           plugins: {
             legend: {
               display: false,
-              labels: {},
             },
           },
           scales: {
@@ -71,5 +70,25 @@ export class MapChartComponent implements AfterViewInit, OnChanges {
         },
       });
     });
+  }
+
+  handleMapClick(event: Event) {
+    if (this.chart) {
+      let interactionItems = this.chart.getElementsAtEventForMode(
+        event,
+        "nearest",
+        { intersect: true },
+        true
+      );
+
+      let clickedFeats = interactionItems.map((item) => {
+        if (item?.element instanceof GeoFeature) {
+          return item.element.feature.properties.name as string;
+        }
+        return null;
+      });
+
+      this.onFeatureClick.emit(clickedFeats);
+    }
   }
 }
