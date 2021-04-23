@@ -1,1 +1,10 @@
-<ofui-map-years [dataSource]="showApi.byCountryByYearCount()"></ofui-map-years>
+<h2>Over the Years</h2>
+<select
+  class="form-control"
+  [(ngModel)]="currentTypeId"
+  (change)="changeType()"
+>
+  <option [value]="null">--- Pick Type ---</option>
+  <option *ngFor="let type of types" [value]="type.Id">{{ type.Name }}</option>
+</select>
+<ofui-map-years [data]="mapYearsData"></ofui-map-years>

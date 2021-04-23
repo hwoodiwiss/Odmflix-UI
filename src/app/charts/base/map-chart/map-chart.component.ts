@@ -60,6 +60,7 @@ export class MapChartComponent implements AfterViewInit, OnChanges {
           plugins: {
             legend: {
               display: false,
+              labels: {},
             },
           },
           scales: {

@@ -1,22 +1,27 @@
-import { Component, Inject, Input, OnInit } from "@angular/core";
+import {
+  Component,
+  Inject,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from "@angular/core";
 import { faPause, faPlay } from "@fortawesome/free-solid-svg-icons";
 import { Observable } from "rxjs";
 import { COUNTRIES_MAP } from "src/app/countries.map";
 import { ByYear } from "src/app/models/by-year";
 import { CountryCount } from "src/app/models/country-count";
-import { ShowApiService } from "src/app/services/show-api.service";
 
 @Component({
   selector: "ofui-map-years",
   templateUrl: "./map-years.component.html",
   styleUrls: ["./map-years.component.scss"],
 })
-export class MapYearsComponent implements OnInit {
+export class MapYearsComponent implements OnInit, OnChanges {
   faPlay = faPlay;
   faPause = faPause;
 
-  @Input() dataSource: Observable<ByYear<CountryCount>>;
-  data?: ByYear<CountryCount>;
+  @Input() data?: ByYear<CountryCount>;
   years: number[];
   rangeMin = 0;
   rangeMax = 0;
@@ -24,25 +29,31 @@ export class MapYearsComponent implements OnInit {
   rangeModel = 0;
   rangeVal = 0;
   animating = false;
+  initialized = false;
 
   constructor(@Inject(COUNTRIES_MAP) private namesMap: Map<string, string>) {
     this.data = null;
   }
 
   ngOnInit(): void {
-    console.log(this.dataSource);
+    this.resetData();
+  }
 
-    this.dataSource.subscribe((d) => {
-      console.log(d);
+  ngOnChanges(changes: SimpleChanges): void {
+    this.resetData();
+  }
 
-      this.years = Object.keys(d)
+  resetData() {
+    this.initialized = false;
+    if (this.data) {
+      this.years = Object.keys(this.data)
         .map((year) => +year)
         .sort((a, b) => {
           return a - b;
         });
       this.setDefaults(this.years);
-      this.data = d;
-    });
+      this.initialized = true;
+    }
   }
 
   setDefaults(years: number[]) {
@@ -70,13 +81,10 @@ export class MapYearsComponent implements OnInit {
   }
 
   nextNearest(evt: any) {
-    console.log(evt);
     const diff = evt - this.rangeVal;
     const currIdx = this.years.findIndex((f) => f == this.rangeVal);
-    console.log(diff);
 
     if (diff > 0) {
-      console.log("skipped", evt);
       this.rangeVal = this.rangeModel = this.years[currIdx + 1];
     } else if (diff < 0) {
       this.rangeVal = this.rangeModel = this.years[currIdx - 1];
