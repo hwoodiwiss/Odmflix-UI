@@ -14,6 +14,9 @@ import { MapYearsComponent } from "./charts/map-years/map-years.component";
 import { CountriesPageComponent } from './countries-page/countries-page.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { YearsPageComponent } from './years-page/years-page.component';
+import { PieChartComponent } from './charts/base/pie-chart/pie-chart.component';
+import { BarChartComponent } from './charts/base/bar-chart/bar-chart.component';
+import { PolarRadiusChartComponent } from './charts/base/polar-radius-chart/polar-radius-chart.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +28,9 @@ import { YearsPageComponent } from './years-page/years-page.component';
     MapYearsComponent,
     CountriesPageComponent,
     YearsPageComponent,
+    PieChartComponent,
+    BarChartComponent,
+    PolarRadiusChartComponent,
   ],
   imports: [
     BrowserModule,
