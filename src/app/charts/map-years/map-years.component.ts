@@ -13,6 +13,11 @@ import { COUNTRIES_MAP } from "src/app/countries.map";
 import { ByYear } from "src/app/models/by-year";
 import { CountryCount } from "src/app/models/country-count";
 
+export interface MapSelection {
+  year: number;
+  country: string;
+}
+
 @Component({
   selector: "ofui-map-years",
   templateUrl: "./map-years.component.html",
@@ -24,10 +29,7 @@ export class MapYearsComponent implements OnInit, OnChanges {
 
   @Input() data?: ByYear<CountryCount>;
 
-  @Output() onFeatureClick = new EventEmitter<{
-    year: number;
-    country: string;
-  }>();
+  @Output() onFeatureClick = new EventEmitter<MapSelection>();
 
   years: number[];
   rangeMin = 0;

@@ -7,4 +7,7 @@
   <option [value]="null">--- Pick Type ---</option>
   <option *ngFor="let type of types" [value]="type.Id">{{ type.Name }}</option>
 </select>
-<ofui-map-years [data]="mapYearsData"></ofui-map-years>
+<ofui-map-years
+  [data]="mapYearsData"
+  (onFeatureClick)="handleFeatureSelected($event)"
+></ofui-map-years>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Observable } from "rxjs";
+import { MapSelection } from "../charts/map-years/map-years.component";
 import { ByYear } from "../models/by-year";
 import { CountryCount } from "../models/country-count";
 import { Type } from "../models/type";
@@ -39,4 +40,6 @@ export class YearsPageComponent implements OnInit {
         this.mapYearsData = data;
       });
   }
+
+  handleFeatureSelected(selection: MapSelection) {}
 }
