@@ -172,7 +172,7 @@ export class MapYearsComponent implements OnInit, OnChanges {
 
   bubbleEvent(clickedItems: MapSelection[]) {
     this.onFeatureClick.emit({
-      year: this.rangeVal,
+      year: this.filterYears ? this.rangeVal : null,
       country: clickedItems[0].country,
       showIds: clickedItems[0].showIds,
     });
