@@ -161,8 +161,8 @@ export class MapYearsComponent implements OnInit, OnChanges {
 
   animateFrame() {
     if (this.rangeVal < this.rangeMax && this.animating) {
+      this.nextNearest(this.rangeVal + 1);
       setTimeout(() => {
-        this.nextNearest(this.rangeVal + 1);
         this.animateFrame();
       }, 500);
     } else {
@@ -171,6 +171,7 @@ export class MapYearsComponent implements OnInit, OnChanges {
   }
 
   bubbleEvent(clickedItems: MapSelection[]) {
+    this.animating = false;
     this.onFeatureClick.emit({
       year: this.filterYears ? this.rangeVal : null,
       country: clickedItems[0].country,

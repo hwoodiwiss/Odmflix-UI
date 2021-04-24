@@ -61,6 +61,7 @@ export class MapChartComponent implements AfterViewInit, OnChanges {
           ],
         },
         options: {
+          animation: false,
           showOutline: true,
           plugins: {
             legend: {

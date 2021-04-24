@@ -8,9 +8,11 @@ import { Show } from "src/app/models/show";
 })
 export class YearCountryDataComponent implements OnInit {
   @Input() showData: Show[];
+  @Input() compareRelease: boolean = false;
   totalShows: number;
   ratingCounts: { [rating: string]: number };
   yearAddedCounts: { [rating: string]: number };
+  yearReleasedCounts: { [rating: string]: number };
   initComplete: boolean = false;
   constructor() {}
 
@@ -18,6 +20,7 @@ export class YearCountryDataComponent implements OnInit {
     this.totalShows = this.showData.length;
     this.setupRatingCounts();
     this.setupDateAddedCounts();
+    this.setupDateReleasedCounts();
     this.initComplete = true;
   }
 
@@ -43,6 +46,17 @@ export class YearCountryDataComponent implements OnInit {
       }, Object.create(null));
   }
 
+  setupDateReleasedCounts() {
+    this.yearReleasedCounts = this.showData
+      .map((show) => show.ReleaseYear)
+      .reduce(function (acc, year) {
+        if (year !== null) {
+          acc[year] = (acc[year] || 0) + 1;
+        }
+        return acc;
+      }, Object.create(null));
+  }
+
   getRatings() {
     let out = [];
     for (const rating of Object.keys(this.ratingCounts)) {
@@ -59,17 +73,52 @@ export class YearCountryDataComponent implements OnInit {
   }
 
   getAddedYears() {
-    let outItem = {
-      label: "Count",
+    const datasets = [];
+    let addedData = {
+      label: "Year Added",
       data: [],
     };
+    datasets.push(addedData);
+
+    addedData.data = this.getYearLabels().map((addedYear) => {
+      return this.yearAddedCounts[addedYear] || 0;
+    });
     for (const year of Object.keys(this.yearAddedCounts).reverse()) {
-      outItem.data.push(this.yearAddedCounts[year]);
+      addedData.data.push(this.yearAddedCounts[year]);
     }
-    return [outItem];
+
+    if (this.compareRelease) {
+      let releasedData = {
+        label: "Year Released",
+        data: [],
+      };
+      datasets.push(releasedData);
+      releasedData.data = this.getYearLabels().map((addedYear) => {
+        return this.yearReleasedCounts[addedYear] || 0;
+      });
+    }
+    return datasets;
   }
 
-  getAddedYearLabels() {
-    return Object.keys(this.yearAddedCounts).reverse();
+  getYearLabels() {
+    let labelsArr = [];
+    if (this.compareRelease) {
+      const addedYears = Object.keys(this.yearAddedCounts).reverse();
+      const releasedYears = Object.keys(this.yearReleasedCounts).reverse();
+      console.log(this.yearReleasedCounts);
+
+      const labelsArrDupes = [...addedYears, ...releasedYears];
+      labelsArr = labelsArrDupes
+        .reduce((acc, curr) => {
+          if (!acc.find((f) => f === curr)) {
+            acc.push(curr);
+          }
+          return acc;
+        }, new Array<string>())
+        .sort((a, b) => +b - +a);
+    } else {
+      labelsArr = Object.keys(this.yearAddedCounts).reverse();
+    }
+    return labelsArr;
   }
 }
