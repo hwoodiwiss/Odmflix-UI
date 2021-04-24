@@ -99,8 +99,6 @@ export class MapYearsComponent implements OnInit, OnChanges {
         }
         return acc;
       }, new Array<CountryCount>());
-    console.log(vals);
-
     return vals;
   }
 

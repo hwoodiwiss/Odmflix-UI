@@ -20,6 +20,7 @@ export class OverTimePageComponent implements OnInit {
   yearCountryData: Show[] = null;
   selectedCountry: string;
   selectedYear: number;
+  filterYears: boolean = false;
 
   constructor(
     public showApi: ShowApiService,
