@@ -30,13 +30,18 @@ export class MapYearsComponent implements OnInit, OnChanges {
   faPause = faPause;
 
   @Input() data?: ByYear<CountryCount>;
+  allYearsData?: CountryCount[];
 
   @Output() onFeatureClick = new EventEmitter<MapYearSelection>();
 
+  @Input() filterYears: boolean = false;
+  @Output() filterYearsChange = new EventEmitter<boolean>();
+
   years: number[];
+
   rangeMin = 0;
   rangeMax = 0;
-  thingIndex = 0;
+  currYear = null;
   rangeModel = 0;
   rangeVal = 0;
   animating = false;
@@ -62,9 +67,41 @@ export class MapYearsComponent implements OnInit, OnChanges {
         .sort((a, b) => {
           return a - b;
         });
+      this.allYearsData = this.getAllYearsData(this.data);
       this.setDefaults(this.years);
       this.initialized = true;
     }
+  }
+
+  getAllYearsData(byYearData: ByYear<CountryCount>) {
+    const years = Object.keys(byYearData);
+    let vals = years
+      .map((year) => byYearData[+year])
+      .reduce((acc, countryCounts) => [...acc, ...countryCounts])
+      .map((countryCount) => {
+        let renamedCount = countryCount;
+        renamedCount.Country = this.getMappedCountryName(countryCount.Country);
+        return renamedCount;
+      })
+      .reduce((acc, countryCount) => {
+        let foundCount = acc.find((f) => f?.Country === countryCount.Country);
+        if (!foundCount) {
+          acc.push(countryCount);
+        } else {
+          let foundIndex = acc.findIndex(
+            (f) => f?.Country === countryCount.Country
+          );
+          acc[foundIndex] = {
+            Country: foundCount.Country,
+            ShowIds: [...foundCount.ShowIds, ...countryCount.ShowIds],
+            Count: +foundCount.Count + +countryCount.Count,
+          };
+        }
+        return acc;
+      }, new Array<CountryCount>());
+    console.log(vals);
+
+    return vals;
   }
 
   setDefaults(years: number[]) {
@@ -72,23 +109,33 @@ export class MapYearsComponent implements OnInit, OnChanges {
     this.rangeMax = years[this.years.length - 1];
     this.rangeModel = this.rangeMin;
     this.rangeVal = this.rangeMin;
-    this.thingIndex = this.rangeMin;
+    this.currYear = this.rangeMin;
   }
 
-  datumFrameValue(index: number) {
-    return (datum: GeoJSON.Feature<GeoJSON.Geometry>) => {
-      let yearVals = this.data[index];
+  datumFrameValue(index?: number) {
+    if (this.filterYears && index !== null) {
+      return (datum: GeoJSON.Feature<GeoJSON.Geometry>) => {
+        let yearVals = this.data[index];
 
-      let countryVal = yearVals.find((countryCount) => {
-        const datumName = datum.properties.name as string;
-        const searchTerm = this.namesMap.has(countryCount.Country)
-          ? this.namesMap[countryCount.Country]
-          : countryCount.Country;
-        return datumName.search(searchTerm) > -1;
-      });
-      datum.properties.ShowIds = countryVal?.ShowIds;
-      return +(countryVal?.Count ?? 0);
-    };
+        let countryVal = yearVals.find((countryCount) => {
+          const datumName = datum.properties.name as string;
+          const searchTerm = this.getMappedCountryName(countryCount.Country);
+          return datumName.search(searchTerm) > -1;
+        });
+        datum.properties.ShowIds = countryVal?.ShowIds;
+        return +(countryVal?.Count ?? 0);
+      };
+    } else {
+      return (datum: GeoJSON.Feature<GeoJSON.Geometry>) => {
+        let countryVal = this.allYearsData?.find((countryCount) => {
+          const datumName = datum.properties.name as string;
+          const searchTerm = this.getMappedCountryName(countryCount.Country);
+          return datumName.search(searchTerm) > -1;
+        });
+        datum.properties.ShowIds = countryVal?.ShowIds;
+        return +(countryVal?.Count ?? 0);
+      };
+    }
   }
 
   nextNearest(evt: any) {
@@ -103,7 +150,7 @@ export class MapYearsComponent implements OnInit, OnChanges {
       this.rangeVal = evt;
     }
 
-    this.thingIndex = this.rangeVal;
+    this.currYear = this.rangeVal;
   }
 
   startAnimation() {
@@ -131,5 +178,16 @@ export class MapYearsComponent implements OnInit, OnChanges {
       country: clickedItems[0].country,
       showIds: clickedItems[0].showIds,
     });
+  }
+
+  getMappedCountryName(countryName: string) {
+    return this.namesMap.has(countryName)
+      ? this.namesMap[countryName]
+      : countryName;
+  }
+
+  updateFilterYears(evt: Event) {
+    this.filterYears = (evt.target as HTMLInputElement).checked;
+    this.filterYearsChange.emit(this.filterYears);
   }
 }

@@ -1,20 +1,39 @@
 <div *ngIf="initialized" class="row">
   <ofui-map-chart
-    [valueMapper]="datumFrameValue(thingIndex)"
+    [valueMapper]="datumFrameValue(currYear)"
     (onFeatureClick)="bubbleEvent($event)"
   ></ofui-map-chart>
-  <input
-    type="range"
-    [min]="rangeMin"
-    [max]="rangeMax"
-    [(ngModel)]="rangeModel"
-    (ngModelChange)="nextNearest($event)"
-  />
-  <h3>{{ rangeVal }}</h3>
-  <button *ngIf="!animating" (click)="startAnimation()" class="btn btn-success">
-    <fa-icon [icon]="faPlay"></fa-icon>
-  </button>
-  <button *ngIf="animating" (click)="animating = false" class="btn btn-warning">
-    <fa-icon [icon]="faPause"></fa-icon>
-  </button>
+  <div class="form-check">
+    <input
+      class="form-check-input form-check-inline"
+      type="checkbox"
+      [checked]="filterYears"
+      (change)="updateFilterYears($event)"
+    />
+    <label class="form-check-label"> Filter by years? </label>
+  </div>
+  <ng-container *ngIf="filterYears">
+    <input
+      type="range"
+      [min]="rangeMin"
+      [max]="rangeMax"
+      [(ngModel)]="rangeModel"
+      (ngModelChange)="nextNearest($event)"
+    />
+    <h3>{{ rangeVal }}</h3>
+    <button
+      *ngIf="!animating"
+      (click)="startAnimation()"
+      class="btn btn-success"
+    >
+      <fa-icon [icon]="faPlay"></fa-icon>
+    </button>
+    <button
+      *ngIf="animating"
+      (click)="animating = false"
+      class="btn btn-warning"
+    >
+      <fa-icon [icon]="faPause"></fa-icon>
+    </button>
+  </ng-container>
 </div>
