@@ -1,0 +1,40 @@
+<table class="table table-striped table-hover">
+  <thead>
+    <tr>
+      <th *ngFor="let header of headers">{{ header }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let rowData of pageData">
+      <td>{{ rowData.Id }}</td>
+      <td>{{ rowData.Title }}</td>
+      <td>{{ rowData.Type }}</td>
+      <td>{{ rowData.DateAdded }}</td>
+      <td>{{ rowData.ReleaseYear }}</td>
+      <td>{{ rowData.Description }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="d-flex justify-content-between p-2">
+  <ngb-pagination
+    [collectionSize]="collectionSize"
+    [(page)]="page"
+    [pageSize]="pageSize"
+    (pageChange)="refreshShows()"
+    [maxSize]="10"
+    [rotate]="true"
+  >
+  </ngb-pagination>
+
+  <select
+    class="custom-select"
+    style="width: auto"
+    [(ngModel)]="pageSize"
+    (ngModelChange)="refreshShows()"
+  >
+    <option [ngValue]="20">20 items per page</option>
+    <option [ngValue]="50">50 items per page</option>
+    <option [ngValue]="100">100 items per page</option>
+  </select>
+</div>
