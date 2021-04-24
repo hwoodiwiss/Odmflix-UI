@@ -25,10 +25,7 @@ export class YearCountryDataComponent implements OnInit {
     this.ratingCounts = this.showData
       .map((show) => show.Rating)
       .reduce(function (counts, rating) {
-        //Filter nulls, don't want to polute the data
-        if (rating !== null) {
-          counts[rating] = (counts[rating] || 0) + 1;
-        }
+        counts[rating] = (counts[rating] || 0) + 1;
         return counts;
       }, Object.create(null));
   }
