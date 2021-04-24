@@ -56,7 +56,7 @@ export class BarChartComponent implements OnInit {
 
   getDataSets() {
     const datasets = this.dataGenerator();
-    let ret = datasets.map((dataset, index) => {
+    return datasets.map((dataset, index) => {
       const colour = datasetColours[index % datasetColours.length];
       const chartDatasetConfig = {
         backgroundColor: new Array(dataset.data.length).fill(
@@ -67,8 +67,5 @@ export class BarChartComponent implements OnInit {
 
       return { ...chartDatasetConfig, ...dataset };
     });
-    console.log(ret);
-
-    return ret;
   }
 }

@@ -1,16 +1,17 @@
 <div class="row">
   <div class="col">
-    <h3 class="display-3 text-muted">Total Shows:</h3>
-    <h4 class="display-4 text-muted">{{ totalShows }}</h4>
+    <h3 class="display-3 text-muted">Total Shows: {{ totalShows }}</h3>
   </div>
 </div>
 <div class="row">
   <div class="col">
     <h3 class="display-3 text-muted">Ratings</h3>
-    <ofui-bar-chart
-      [horizontal]="false"
+    <ofui-pie-chart
       [dataGenerator]="getRatings.bind(this)"
       [labelGenerator]="getRatingLabels.bind(this)"
-    ></ofui-bar-chart>
+    ></ofui-pie-chart>
+  </div>
+  <div class="col">
+    <h3 class="display-3 text-muted">Something</h3>
   </div>
 </div>

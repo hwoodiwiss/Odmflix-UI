@@ -35,12 +35,10 @@ export class YearCountryDataComponent implements OnInit {
     }
     console.log(out);
 
-    return [
-      {
-        label: "Ratings",
-        data: out,
-      },
-    ];
+    return {
+      label: "Ratings",
+      data: out,
+    };
   }
 
   getRatingLabels() {
