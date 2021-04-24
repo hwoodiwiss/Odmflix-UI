@@ -3,16 +3,21 @@
     <h3 class="display-3 text-muted">Total Shows: {{ totalShows }}</h3>
   </div>
 </div>
-<div class="row">
-  <div class="col-4">
-    <h4 class="display-3 text-muted">Ratings</h4>
+<div class="row bottom">
+  <div class="col-6 left">
+    <h4 class="display-4 text-muted">Ratings</h4>
     <ofui-pie-chart
       [dataGenerator]="getRatings.bind(this)"
       [labelGenerator]="getRatingLabels.bind(this)"
     ></ofui-pie-chart>
   </div>
-  <div class="col-8">
-    <h4 class="display-3 text-muted">Years Added</h4>
+  <div class="col"></div>
+</div>
+<div class="row bottom">
+  <div class="col">
+    <h4 class="display-4 text-muted">
+      Years Added {{ compareRelease ? "Vs Years Released" : "" }}
+    </h4>
     <ofui-bar-chart
       [horizontal]="true"
       [dataGenerator]="getAddedYears.bind(this)"
@@ -23,6 +28,7 @@
 </div>
 <div class="row">
   <div class="col">
+    <h4 class="display-4 text-muted">Show Data</h4>
     <ngb-accordion #acc="ngbAccordion">
       <ngb-panel title="Data">
         <ng-template ngbPanelContent>
