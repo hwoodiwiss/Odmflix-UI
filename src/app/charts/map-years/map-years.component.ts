@@ -114,7 +114,6 @@ export class MapYearsComponent implements OnInit, OnChanges {
     if (this.filterYears && index !== null) {
       return (datum: GeoJSON.Feature<GeoJSON.Geometry>) => {
         let yearVals = this.data[index];
-
         let countryVal = yearVals.find((countryCount) => {
           const datumName = datum.properties.name as string;
           const searchTerm = this.getMappedCountryName(countryCount.Country);
@@ -180,9 +179,7 @@ export class MapYearsComponent implements OnInit, OnChanges {
   }
 
   getMappedCountryName(countryName: string) {
-    return this.namesMap.has(countryName)
-      ? this.namesMap[countryName]
-      : countryName;
+    return this.namesMap.get(countryName) || countryName;
   }
 
   updateFilterYears(evt: Event) {
