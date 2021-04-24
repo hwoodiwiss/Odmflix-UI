@@ -21,3 +21,14 @@
     </ofui-bar-chart>
   </div>
 </div>
+<div class="row">
+  <div class="col">
+    <ngb-accordion #acc="ngbAccordion">
+      <ngb-panel title="Data">
+        <ng-template ngbPanelContent>
+          <ofui-shows-table [data]="showData"></ofui-shows-table>
+        </ng-template>
+      </ngb-panel>
+    </ngb-accordion>
+  </div>
+</div>

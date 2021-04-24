@@ -105,8 +105,6 @@ export class YearCountryDataComponent implements OnInit {
     if (this.compareRelease) {
       const addedYears = Object.keys(this.yearAddedCounts).reverse();
       const releasedYears = Object.keys(this.yearReleasedCounts).reverse();
-      console.log(this.yearReleasedCounts);
-
       const labelsArrDupes = [...addedYears, ...releasedYears];
       labelsArr = labelsArrDupes
         .reduce((acc, curr) => {
