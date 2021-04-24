@@ -4,14 +4,20 @@
   </div>
 </div>
 <div class="row">
-  <div class="col">
-    <h3 class="display-3 text-muted">Ratings</h3>
+  <div class="col-4">
+    <h4 class="display-3 text-muted">Ratings</h4>
     <ofui-pie-chart
       [dataGenerator]="getRatings.bind(this)"
       [labelGenerator]="getRatingLabels.bind(this)"
     ></ofui-pie-chart>
   </div>
-  <div class="col">
-    <h3 class="display-3 text-muted">Something</h3>
+  <div class="col-8">
+    <h4 class="display-3 text-muted">Years Added</h4>
+    <ofui-bar-chart
+      [horizontal]="true"
+      [dataGenerator]="getAddedYears.bind(this)"
+      [labelGenerator]="getAddedYearLabels.bind(this)"
+    >
+    </ofui-bar-chart>
   </div>
 </div>

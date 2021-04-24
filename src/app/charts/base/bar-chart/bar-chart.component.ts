@@ -64,7 +64,6 @@ export class BarChartComponent implements OnInit {
         ),
         borderColor: new Array(dataset.data.length).fill(ColourToRgb(colour)),
       };
-
       return { ...chartDatasetConfig, ...dataset };
     });
   }

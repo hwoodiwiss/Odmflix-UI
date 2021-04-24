@@ -16,7 +16,7 @@
 <hr />
 <h2 *ngIf="yearCountryData !== null">
   Details for {{ selectedCountry }}
-  {{ filterYears ? "in " + selectedYear : "" }}
+  {{ filterYears && selectedYear ? "in " + selectedYear : "" }}
 </h2>
 <ofui-year-country-data
   id="details"
