@@ -11,6 +11,7 @@ export class BarChartComponent implements OnInit {
   @ViewChild("chartCanvas") chartElement: ElementRef<HTMLCanvasElement>;
   @Input() horizontal: boolean = false;
   @Input() dataGenerator: () => { label: string; data: number[] }[];
+  @Input() labelGenerator: () => string[];
   chart: Chart;
   constructor() {}
 
@@ -20,6 +21,7 @@ export class BarChartComponent implements OnInit {
     this.chart = new Chart(this.chartElement.nativeElement, {
       type: "bar",
       data: {
+        labels: this.labelGenerator(),
         datasets: this.getDataSets(),
       },
       options: {
@@ -54,7 +56,7 @@ export class BarChartComponent implements OnInit {
 
   getDataSets() {
     const datasets = this.dataGenerator();
-    return datasets.map((dataset, index) => {
+    let ret = datasets.map((dataset, index) => {
       const colour = datasetColours[index % datasetColours.length];
       const chartDatasetConfig = {
         backgroundColor: new Array(dataset.data.length).fill(
@@ -65,5 +67,8 @@ export class BarChartComponent implements OnInit {
 
       return { ...chartDatasetConfig, ...dataset };
     });
+    console.log(ret);
+
+    return ret;
   }
 }

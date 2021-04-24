@@ -4,6 +4,7 @@ import { MapYearSelection } from "../charts/map-years/map-years.component";
 import { REVERSE_COUNTRIES_MAP } from "../countries.map";
 import { ByYear } from "../models/by-year";
 import { CountryCount } from "../models/country-count";
+import { Show } from "../models/show";
 import { Type } from "../models/type";
 import { ShowApiService } from "../services/show-api.service";
 import { TypeApiService } from "../services/type-api.service";
@@ -17,6 +18,9 @@ export class YearsPageComponent implements OnInit {
   types: Type[] = [];
   currentTypeId?: string;
   mapYearsData: ByYear<CountryCount>;
+  yearCountryData: Show[] = null;
+  selectedCountry: string;
+  selectedYear: number;
 
   constructor(
     public showApi: ShowApiService,
@@ -47,8 +51,11 @@ export class YearsPageComponent implements OnInit {
   }
 
   handleFeatureSelected(selection: MapYearSelection) {
+    this.yearCountryData = null;
+    this.selectedCountry = selection.country;
+    this.selectedYear = selection.year;
     this.showApi.byIds(selection.showIds).subscribe((data) => {
-      console.log(data);
+      this.yearCountryData = data;
     });
   }
 }

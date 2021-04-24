@@ -12,3 +12,12 @@
   [data]="mapYearsData"
   (onFeatureClick)="handleFeatureSelected($event)"
 ></ofui-map-years>
+<hr />
+<h2 *ngIf="yearCountryData !== null">
+  Details for {{ selectedCountry }} in {{ selectedYear }}
+</h2>
+<ofui-year-country-data
+  id="details"
+  *ngIf="yearCountryData !== null"
+  [showData]="yearCountryData"
+></ofui-year-country-data>

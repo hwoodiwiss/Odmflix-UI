@@ -1,1 +1,16 @@
-<ofui-bar-chart [horizontal]="true"></ofui-bar-chart>
+<div class="row">
+  <div class="col">
+    <h3 class="display-3 text-muted">Total Shows:</h3>
+    <h4 class="display-4 text-muted">{{ totalShows }}</h4>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    <h3 class="display-3 text-muted">Ratings</h3>
+    <ofui-bar-chart
+      [horizontal]="false"
+      [dataGenerator]="getRatings.bind(this)"
+      [labelGenerator]="getRatingLabels.bind(this)"
+    ></ofui-bar-chart>
+  </div>
+</div>
