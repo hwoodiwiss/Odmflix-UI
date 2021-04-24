@@ -15,10 +15,10 @@ import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { OverTimePageComponent } from "./over-time-page/over-time-page.component";
 import { PieChartComponent } from "./charts/base/pie-chart/pie-chart.component";
 import { BarChartComponent } from "./charts/base/bar-chart/bar-chart.component";
-import { PolarRadiusChartComponent } from "./charts/base/polar-radius-chart/polar-radius-chart.component";
+import { PolarAreaChartComponent } from "./charts/base/polar-area-chart/polar-area-chart.component";
 import { YearCountryDataComponent } from "./over-time-page/year-country-data/year-country-data.component";
 import { Chart, registerables } from "chart.js";
-import { ShowsTableComponent } from './shared/shows-table/shows-table.component';
+import { ShowsTableComponent } from "./shared/shows-table/shows-table.component";
 
 Chart.register(...registerables);
 
@@ -33,7 +33,7 @@ Chart.register(...registerables);
     OverTimePageComponent,
     PieChartComponent,
     BarChartComponent,
-    PolarRadiusChartComponent,
+    PolarAreaChartComponent,
     YearCountryDataComponent,
     ShowsTableComponent,
   ],

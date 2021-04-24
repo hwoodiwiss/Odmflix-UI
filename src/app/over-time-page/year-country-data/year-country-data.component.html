@@ -11,7 +11,15 @@
       [labelGenerator]="getRatingLabels.bind(this)"
     ></ofui-pie-chart>
   </div>
-  <div class="col"></div>
+  <div class="col">
+    <h4 class="display-4 text-muted">Top 10 Actors</h4>
+    <ofui-polar-area-chart
+      *ngIf="actorCounts !== null"
+      [dataGenerator]="getActorCounts.bind(this)"
+      [labelGenerator]="getActorLabels.bind(this)"
+    >
+    </ofui-polar-area-chart>
+  </div>
 </div>
 <div class="row bottom">
   <div class="col">

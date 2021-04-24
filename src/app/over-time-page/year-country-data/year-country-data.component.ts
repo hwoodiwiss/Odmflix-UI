@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from "@angular/core";
+import { ActorCount } from "src/app/models/actor-count";
 import { Show } from "src/app/models/show";
+import { ActorsApiService } from "src/app/services/actors-api.service";
 
 @Component({
   selector: "ofui-year-country-data",
@@ -10,17 +12,21 @@ export class YearCountryDataComponent implements OnInit {
   @Input() showData: Show[];
   @Input() compareRelease: boolean = false;
   totalShows: number;
+
   ratingCounts: { [rating: string]: number };
+  actorCounts: ActorCount[] = null;
   yearAddedCounts: { [rating: string]: number };
   yearReleasedCounts: { [rating: string]: number };
+
   initComplete: boolean = false;
-  constructor() {}
+  constructor(private actorsApi: ActorsApiService) {}
 
   ngOnInit(): void {
     this.totalShows = this.showData.length;
     this.setupRatingCounts();
     this.setupDateAddedCounts();
     this.setupDateReleasedCounts();
+    this.setupActorCounts();
     this.initComplete = true;
   }
 
@@ -57,6 +63,17 @@ export class YearCountryDataComponent implements OnInit {
       }, Object.create(null));
   }
 
+  setupActorCounts() {
+    this.actorsApi
+      .topNForShows(
+        10,
+        this.showData.map((item) => item.Id)
+      )
+      .subscribe((data) => {
+        this.actorCounts = data;
+      });
+  }
+
   getRatings() {
     let out = [];
     for (const rating of Object.keys(this.ratingCounts)) {
@@ -70,6 +87,17 @@ export class YearCountryDataComponent implements OnInit {
 
   getRatingLabels() {
     return Object.keys(this.ratingCounts);
+  }
+
+  getActorCounts() {
+    return {
+      label: "Actors",
+      data: this.actorCounts.map((item) => item.Count),
+    };
+  }
+
+  getActorLabels() {
+    return this.actorCounts.map((item) => item.Actor);
   }
 
   getAddedYears() {
