@@ -1,5 +1,4 @@
 import { Component, Inject, OnInit } from "@angular/core";
-import { Observable } from "rxjs";
 import { MapYearSelection } from "../charts/map-years/map-years.component";
 import { REVERSE_COUNTRIES_MAP } from "../countries.map";
 import { ByYear } from "../models/by-year";
@@ -10,11 +9,11 @@ import { ShowApiService } from "../services/show-api.service";
 import { TypeApiService } from "../services/type-api.service";
 
 @Component({
-  selector: "ofui-years-page",
-  templateUrl: "./years-page.component.html",
-  styleUrls: ["./years-page.component.scss"],
+  selector: "ofui-over-time-page",
+  templateUrl: "./over-time-page.component.html",
+  styleUrls: ["./over-time-page.component.scss"],
 })
-export class YearsPageComponent implements OnInit {
+export class OverTimePageComponent implements OnInit {
   types: Type[] = [];
   currentTypeId?: string;
   mapYearsData: ByYear<CountryCount>;

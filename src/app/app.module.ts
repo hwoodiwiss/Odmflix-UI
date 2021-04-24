@@ -12,11 +12,11 @@ import { FormsModule } from "@angular/forms";
 import { MapYearsComponent } from "./charts/map-years/map-years.component";
 import { CountriesPageComponent } from "./countries-page/countries-page.component";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
-import { YearsPageComponent } from "./years-page/years-page.component";
+import { OverTimePageComponent } from "./over-time-page/over-time-page.component";
 import { PieChartComponent } from "./charts/base/pie-chart/pie-chart.component";
 import { BarChartComponent } from "./charts/base/bar-chart/bar-chart.component";
 import { PolarRadiusChartComponent } from "./charts/base/polar-radius-chart/polar-radius-chart.component";
-import { YearCountryDataComponent } from "./years-page/year-country-data/year-country-data.component";
+import { YearCountryDataComponent } from "./over-time-page/year-country-data/year-country-data.component";
 import { Chart, registerables } from "chart.js";
 
 Chart.register(...registerables);
@@ -29,7 +29,7 @@ Chart.register(...registerables);
     MapChartComponent,
     MapYearsComponent,
     CountriesPageComponent,
-    YearsPageComponent,
+    OverTimePageComponent,
     PieChartComponent,
     BarChartComponent,
     PolarRadiusChartComponent,
