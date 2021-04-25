@@ -6,11 +6,17 @@ import { ActorCount } from "../models/actor-count";
 @Injectable({
   providedIn: "root",
 })
-export class ActorsApiService {
+export class ActorApiService {
   constructor(
     private httpClient: HttpClient,
     @Inject(APP_CONFIG) private config: AppConfig
   ) {}
+
+  public topN(n: number) {
+    return this.httpClient.get<ActorCount[]>(
+      `${this.config.ApiUri}/Actor/GetTopActors?count=${n}`
+    );
+  }
 
   public topNForShows(n: number, ids: number[]) {
     return this.httpClient.post<ActorCount[]>(
