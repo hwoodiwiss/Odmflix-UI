@@ -5,6 +5,7 @@ import {
   OnInit,
 } from "@angular/core";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { Subject } from "rxjs";
 import { ActorCount } from "src/app/models/actor-count";
 import { RatingCount } from "src/app/models/rating-count";
 import { Show } from "src/app/models/show";
@@ -33,6 +34,13 @@ export class YearCountryDataComponent implements OnInit {
   initComplete: boolean = false;
 
   faClose = faTimes;
+
+  showDataSubject = new Subject<Show[]>();
+  $showData = this.showDataSubject.asObservable();
+
+  selectedRatingShowsSubject = new Subject<Show[]>();
+  $selectedRatingShows = this.selectedRatingShowsSubject.asObservable();
+
   constructor(private actorsApi: ActorApiService) {}
 
   ngOnInit(): void {
@@ -196,11 +204,18 @@ export class YearCountryDataComponent implements OnInit {
 
   ratingSelected(index: number) {
     this.selectedRating = this.ratingCounts[index];
+    this.selectedRatingShowsSubject.next(
+      this.showData.filter((item) => item.Rating === this.selectedRating.Rating)
+    );
   }
 
-  getShowsForSelectedRating() {
-    return this.showData.filter(
-      (item) => item.Rating === this.selectedRating.Rating
+  ratingShowsShown() {
+    this.selectedRatingShowsSubject.next(
+      this.showData.filter((item) => item.Rating === this.selectedRating.Rating)
     );
+  }
+
+  allShowsShown() {
+    this.showDataSubject.next(this.showData);
   }
 }

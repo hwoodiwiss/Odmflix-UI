@@ -34,7 +34,7 @@
 </div>
 <div *ngIf="selectedRating !== null" class="row bottom">
   <div class="col">
-    <ngb-accordion #acc="ngbAccordion">
+    <ngb-accordion #acc="ngbAccordion" (shown)="ratingShowsShown()">
       <ngb-panel title="">
         <ng-template ngbPanelHeader let-opened="opened">
           <div class="d-flex align-items-center justify-content-between">
@@ -51,7 +51,7 @@
         </ng-template>
         <ng-template ngbPanelContent>
           <ofui-shows-table
-            [data]="getShowsForSelectedRating()"
+            [dataSource]="$selectedRatingShows"
             [pageSizes]="[10, 20, 50]"
           ></ofui-shows-table>
         </ng-template>
@@ -75,11 +75,11 @@
 <div class="row">
   <div class="col">
     <h4 class="display-4 text-muted">Show Data</h4>
-    <ngb-accordion #acc="ngbAccordion">
+    <ngb-accordion #acc="ngbAccordion" (shown)="allShowsShown()">
       <ngb-panel title="Data">
         <ng-template ngbPanelContent>
           <ofui-shows-table
-            [data]="showData"
+            [dataSource]="$showData"
             [pageSizes]="[20, 50, 100]"
           ></ofui-shows-table>
         </ng-template>

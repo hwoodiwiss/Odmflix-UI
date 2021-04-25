@@ -1,5 +1,11 @@
 import { ThrowStmt } from "@angular/compiler";
-import { Component, Input, OnInit } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+} from "@angular/core";
+import { Observable } from "rxjs";
 import { Show } from "src/app/models/show";
 
 class ShowRow {
@@ -27,23 +33,31 @@ class ShowRow {
   styleUrls: ["./shows-table.component.scss"],
 })
 export class ShowsTableComponent implements OnInit {
-  @Input() data: Show[];
+  @Input() dataSource: Observable<Show[]>;
   @Input() pageSizes: number[];
 
+  data: Show[];
   pageData: ShowRow[];
   page = 1;
-  pageSize = 20;
+  pageSize = 0;
   collectionSize = 0;
+
+  loaded = false;
 
   headers: string[] = [];
   constructor() {}
 
   ngOnInit(): void {
-    this.collectionSize = this.data.length;
-    this.refreshShows();
+    this.pageSize = this.pageSizes[0];
+    this.dataSource.subscribe((data) => {
+      this.data = data;
+      this.collectionSize = this.data.length;
+      this.refreshShows();
+    });
   }
 
   refreshShows() {
+    this.loaded = false;
     this.pageData = this.data
       .sort((a, b) => a.Title.localeCompare(b.Title))
       .slice(
@@ -52,5 +66,6 @@ export class ShowsTableComponent implements OnInit {
       )
       .map((item) => new ShowRow(item));
     this.headers = Object.keys(this.pageData[0]);
+    this.loaded = true;
   }
 }
