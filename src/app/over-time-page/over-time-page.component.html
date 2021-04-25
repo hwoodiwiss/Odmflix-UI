@@ -18,10 +18,10 @@
   Details for {{ selectedCountry }}
   {{ filterYears && selectedYear ? "in " + selectedYear : "" }}
 </h2>
-<ofui-year-country-data
+<ofui-show-data
   id="details"
   *ngIf="yearCountryData !== null"
   [showData]="yearCountryData"
   [compareOverTime]="selectedYear === null"
   [compareTypes]="!typeSelected()"
-></ofui-year-country-data>
+></ofui-show-data>

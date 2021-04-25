@@ -16,7 +16,7 @@ import { OverTimePageComponent } from "./over-time-page/over-time-page.component
 import { PieChartComponent } from "./charts/base/pie-chart/pie-chart.component";
 import { BarChartComponent } from "./charts/base/bar-chart/bar-chart.component";
 import { PolarAreaChartComponent } from "./charts/base/polar-area-chart/polar-area-chart.component";
-import { YearCountryDataComponent } from "./over-time-page/year-country-data/year-country-data.component";
+import { ShowDataComponent } from "./shared/show-data/show-data.component";
 import { Chart, registerables } from "chart.js";
 import { ShowsTableComponent } from "./shared/shows-table/shows-table.component";
 
@@ -34,7 +34,7 @@ Chart.register(...registerables);
     PieChartComponent,
     BarChartComponent,
     PolarAreaChartComponent,
-    YearCountryDataComponent,
+    ShowDataComponent,
     ShowsTableComponent,
   ],
   imports: [

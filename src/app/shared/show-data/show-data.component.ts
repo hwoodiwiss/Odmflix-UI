@@ -12,12 +12,12 @@ import { Show } from "src/app/models/show";
 import { ActorApiService } from "src/app/services/actors-api.service";
 
 @Component({
-  selector: "ofui-year-country-data",
-  templateUrl: "./year-country-data.component.html",
-  styleUrls: ["./year-country-data.component.scss"],
+  selector: "ofui-show-data",
+  templateUrl: "./show-data.component.html",
+  styleUrls: ["./show-data.component.scss"],
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class YearCountryDataComponent implements OnInit {
+export class ShowDataComponent implements OnInit {
   @Input() showData: Show[];
   @Input() compareOverTime: boolean = false;
   @Input() compareTypes: boolean;
