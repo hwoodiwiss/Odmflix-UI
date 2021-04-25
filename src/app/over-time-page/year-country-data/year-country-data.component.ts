@@ -4,9 +4,11 @@ import {
   Input,
   OnInit,
 } from "@angular/core";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { ActorCount } from "src/app/models/actor-count";
+import { RatingCount } from "src/app/models/rating-count";
 import { Show } from "src/app/models/show";
-import { ActorsApiService } from "src/app/services/actors-api.service";
+import { ActorApiService } from "src/app/services/actors-api.service";
 
 @Component({
   selector: "ofui-year-country-data",
@@ -20,14 +22,18 @@ export class YearCountryDataComponent implements OnInit {
   @Input() compareTypes: boolean;
   @Input() actorCounts: ActorCount[] = null;
   @Input() typeCounts: { [rating: string]: number } = null;
-  @Input() ratingCounts: { [rating: string]: number } = null;
+  @Input() ratingCounts: RatingCount[] = null;
 
   totalShows: number;
   yearAddedCounts: { [year: string]: number };
   yearReleasedCounts: { [year: string]: number };
 
+  selectedRating: RatingCount = null;
+
   initComplete: boolean = false;
-  constructor(private actorsApi: ActorsApiService) {}
+
+  faClose = faTimes;
+  constructor(private actorsApi: ActorApiService) {}
 
   ngOnInit(): void {
     this.totalShows = this.showData.length;
@@ -43,10 +49,15 @@ export class YearCountryDataComponent implements OnInit {
     if (this.ratingCounts === null) {
       this.ratingCounts = this.showData
         .map((show) => show.Rating)
-        .reduce(function (counts, rating) {
-          counts[rating] = (counts[rating] || 0) + 1;
-          return counts;
-        }, Object.create(null));
+        .reduce(function (acc, rating) {
+          let foundIndex = acc.findIndex((item) => item.Rating == rating);
+          if (foundIndex >= 0) {
+            acc[foundIndex].Count++;
+          } else {
+            acc.push({ Rating: rating, Count: 1 });
+          }
+          return acc;
+        }, new Array<RatingCount>());
     }
   }
 
@@ -86,29 +97,27 @@ export class YearCountryDataComponent implements OnInit {
   }
 
   setupActorCounts() {
-    this.actorsApi
-      .topNForShows(
-        10,
-        this.showData.map((item) => item.Id)
-      )
-      .subscribe((data) => {
-        this.actorCounts = data;
-      });
+    if (this.actorCounts === null) {
+      this.actorsApi
+        .topNForShows(
+          10,
+          this.showData.map((item) => item.Id)
+        )
+        .subscribe((data) => {
+          this.actorCounts = data;
+        });
+    }
   }
 
   getRatings() {
-    let out = [];
-    for (const rating of Object.keys(this.ratingCounts)) {
-      out.push(this.ratingCounts[rating]);
-    }
     return {
       label: "Ratings",
-      data: out,
+      data: this.ratingCounts.map((item) => item.Count),
     };
   }
 
   getRatingLabels() {
-    return Object.keys(this.ratingCounts);
+    return this.ratingCounts.map((item) => item.Rating);
   }
 
   getTypes() {
@@ -183,5 +192,15 @@ export class YearCountryDataComponent implements OnInit {
       labelsArr = Object.keys(this.yearAddedCounts).reverse();
     }
     return labelsArr;
+  }
+
+  ratingSelected(index: number) {
+    this.selectedRating = this.ratingCounts[index];
+  }
+
+  getShowsForSelectedRating() {
+    return this.showData.filter(
+      (item) => item.Rating === this.selectedRating.Rating
+    );
   }
 }

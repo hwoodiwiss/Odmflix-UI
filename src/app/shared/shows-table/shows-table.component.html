@@ -33,8 +33,8 @@
     [(ngModel)]="pageSize"
     (ngModelChange)="refreshShows()"
   >
-    <option [ngValue]="20">20 items per page</option>
-    <option [ngValue]="50">50 items per page</option>
-    <option [ngValue]="100">100 items per page</option>
+    <option *ngFor="let pageSize of pageSizes" [ngValue]="pageSize">
+      {{ pageSize }} items per page
+    </option>
   </select>
 </div>

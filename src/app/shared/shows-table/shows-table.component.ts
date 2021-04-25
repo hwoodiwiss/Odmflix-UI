@@ -28,6 +28,7 @@ class ShowRow {
 })
 export class ShowsTableComponent implements OnInit {
   @Input() data: Show[];
+  @Input() pageSizes: number[];
 
   pageData: ShowRow[];
   page = 1;

@@ -15,9 +15,11 @@
 <div class="row bottom">
   <div class="col-6 left">
     <h4 class="display-4 text-muted">Ratings</h4>
+    <h5>Click a rating to see shows</h5>
     <ofui-pie-chart
       [dataGenerator]="getRatings.bind(this)"
       [labelGenerator]="getRatingLabels.bind(this)"
+      (elementClicked)="ratingSelected($event)"
     ></ofui-pie-chart>
   </div>
   <div class="col">
@@ -28,6 +30,33 @@
       [labelGenerator]="getActorLabels.bind(this)"
     >
     </ofui-polar-area-chart>
+  </div>
+</div>
+<div *ngIf="selectedRating !== null" class="row bottom">
+  <div class="col">
+    <ngb-accordion #acc="ngbAccordion">
+      <ngb-panel title="">
+        <ng-template ngbPanelHeader let-opened="opened">
+          <div class="d-flex align-items-center justify-content-between">
+            <button ngbPanelToggle class="m-0 btn btn-link">
+              {{ selectedRating.Rating }} (Click to expand)
+            </button>
+            <button
+              (click)="selectedRating = null"
+              class="btn btn-link text-danger p-0"
+            >
+              <fa-icon [icon]="faClose"></fa-icon>
+            </button>
+          </div>
+        </ng-template>
+        <ng-template ngbPanelContent>
+          <ofui-shows-table
+            [data]="getShowsForSelectedRating()"
+            [pageSizes]="[10, 20, 50]"
+          ></ofui-shows-table>
+        </ng-template>
+      </ngb-panel>
+    </ngb-accordion>
   </div>
 </div>
 <div class="row bottom">
@@ -49,7 +78,10 @@
     <ngb-accordion #acc="ngbAccordion">
       <ngb-panel title="Data">
         <ng-template ngbPanelContent>
-          <ofui-shows-table [data]="showData"></ofui-shows-table>
+          <ofui-shows-table
+            [data]="showData"
+            [pageSizes]="[20, 50, 100]"
+          ></ofui-shows-table>
         </ng-template>
       </ngb-panel>
     </ngb-accordion>
