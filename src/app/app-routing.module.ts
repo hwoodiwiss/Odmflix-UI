@@ -11,10 +11,6 @@ const routes: Routes = [
     component: HomePageComponent,
   },
   {
-    path: "Countries",
-    component: CountriesPageComponent,
-  },
-  {
     path: "OverTime",
     component: OverTimePageComponent,
   },
