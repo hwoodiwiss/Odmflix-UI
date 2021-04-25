@@ -3,6 +3,15 @@
     <h3 class="display-3 text-muted">Total Shows: {{ totalShows }}</h3>
   </div>
 </div>
+<div *ngIf="compareTypes" class="row bottom justify-content-md-center">
+  <div class="col-6">
+    <h4 class="display-4 text-muted">Show Types</h4>
+    <ofui-pie-chart
+      [dataGenerator]="getTypes.bind(this)"
+      [labelGenerator]="getTypeLabels.bind(this)"
+    ></ofui-pie-chart>
+  </div>
+</div>
 <div class="row bottom">
   <div class="col-6 left">
     <h4 class="display-4 text-muted">Ratings</h4>
@@ -24,7 +33,7 @@
 <div class="row bottom">
   <div class="col">
     <h4 class="display-4 text-muted">
-      Years Added {{ overTime ? "Vs Years Released" : "" }}
+      Year Added {{ compareOverTime ? "Vs Year Released" : "" }}
     </h4>
     <ofui-bar-chart
       [horizontal]="true"

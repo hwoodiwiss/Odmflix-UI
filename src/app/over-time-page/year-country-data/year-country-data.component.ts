@@ -1,5 +1,9 @@
-import { Component, Input, OnInit } from "@angular/core";
-import { Subject } from "rxjs";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+} from "@angular/core";
 import { ActorCount } from "src/app/models/actor-count";
 import { Show } from "src/app/models/show";
 import { ActorsApiService } from "src/app/services/actors-api.service";
@@ -8,14 +12,17 @@ import { ActorsApiService } from "src/app/services/actors-api.service";
   selector: "ofui-year-country-data",
   templateUrl: "./year-country-data.component.html",
   styleUrls: ["./year-country-data.component.scss"],
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class YearCountryDataComponent implements OnInit {
   @Input() showData: Show[];
-  @Input() overTime: boolean = false;
+  @Input() compareOverTime: boolean = false;
+  @Input() compareTypes: boolean;
   @Input() actorCounts: ActorCount[] = null;
+  @Input() typeCounts: { [rating: string]: number } = null;
+  @Input() ratingCounts: { [rating: string]: number } = null;
 
   totalShows: number;
-  ratingCounts: { [rating: string]: number };
   yearAddedCounts: { [year: string]: number };
   yearReleasedCounts: { [year: string]: number };
 
@@ -28,16 +35,30 @@ export class YearCountryDataComponent implements OnInit {
     this.setupDateAddedCounts();
     this.setupDateReleasedCounts();
     this.setupActorCounts();
+    this.setupTypeCounts();
     this.initComplete = true;
   }
 
   setupRatingCounts() {
-    this.ratingCounts = this.showData
-      .map((show) => show.Rating)
-      .reduce(function (counts, rating) {
-        counts[rating] = (counts[rating] || 0) + 1;
-        return counts;
-      }, Object.create(null));
+    if (this.ratingCounts === null) {
+      this.ratingCounts = this.showData
+        .map((show) => show.Rating)
+        .reduce(function (counts, rating) {
+          counts[rating] = (counts[rating] || 0) + 1;
+          return counts;
+        }, Object.create(null));
+    }
+  }
+
+  setupTypeCounts() {
+    if (this.typeCounts === null) {
+      this.typeCounts = this.showData
+        .map((show) => show.ShowType)
+        .reduce(function (counts, type) {
+          counts[type] = (counts[type] || 0) + 1;
+          return counts;
+        }, Object.create(null));
+    }
   }
 
   setupDateAddedCounts() {
@@ -90,6 +111,21 @@ export class YearCountryDataComponent implements OnInit {
     return Object.keys(this.ratingCounts);
   }
 
+  getTypes() {
+    let out = [];
+    for (const type of Object.keys(this.typeCounts)) {
+      out.push(this.typeCounts[type]);
+    }
+    return {
+      label: "Types",
+      data: out,
+    };
+  }
+
+  getTypeLabels() {
+    return Object.keys(this.typeCounts);
+  }
+
   getActorCounts() {
     return {
       label: "Actors",
@@ -116,7 +152,7 @@ export class YearCountryDataComponent implements OnInit {
       addedData.data.push(this.yearAddedCounts[year]);
     }
 
-    if (this.overTime) {
+    if (this.compareOverTime) {
       let releasedData = {
         label: "Year Released",
         data: [],
@@ -131,7 +167,7 @@ export class YearCountryDataComponent implements OnInit {
 
   getYearLabels() {
     let labelsArr = [];
-    if (this.overTime) {
+    if (this.compareOverTime) {
       const addedYears = Object.keys(this.yearAddedCounts).reverse();
       const releasedYears = Object.keys(this.yearReleasedCounts).reverse();
       const labelsArrDupes = [...addedYears, ...releasedYears];

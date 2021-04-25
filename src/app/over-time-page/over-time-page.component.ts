@@ -47,7 +47,12 @@ export class OverTimePageComponent implements OnInit {
       )
       .subscribe((data) => {
         this.mapYearsData = data;
+        this.yearCountryData = null;
       });
+  }
+
+  typeSelected() {
+    return this.currentTypeId !== "null" && this.currentTypeId !== null;
   }
 
   handleFeatureSelected(selection: MapYearSelection) {
