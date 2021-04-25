@@ -60,7 +60,7 @@ export class BarChartComponent implements OnInit {
       const colour = datasetColours[index % datasetColours.length];
       const chartDatasetConfig = {
         backgroundColor: new Array(dataset.data.length).fill(
-          ColourToRgba(colour, 0.2)
+          ColourToRgb(colour)
         ),
         borderColor: new Array(dataset.data.length).fill(ColourToRgb(colour)),
       };
