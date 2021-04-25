@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   Component,
   EventEmitter,
   Inject,
@@ -9,6 +10,7 @@ import {
   SimpleChanges,
 } from "@angular/core";
 import { faPause, faPlay } from "@fortawesome/free-solid-svg-icons";
+import { of, Subject } from "rxjs";
 import { COUNTRIES_MAP } from "src/app/countries.map";
 import { ByYear } from "src/app/models/by-year";
 import { CountryCount } from "src/app/models/country-count";
@@ -36,6 +38,11 @@ export class MapYearsComponent implements OnInit, OnChanges {
 
   @Input() filterYears: boolean = false;
   @Output() filterYearsChange = new EventEmitter<boolean>();
+
+  datumFrameFnSubject = new Subject<
+    (datum: GeoJSON.Feature<GeoJSON.Geometry>) => number
+  >();
+  datumFrameFnObservable = this.datumFrameFnSubject.asObservable();
 
   years: number[];
 
@@ -70,6 +77,7 @@ export class MapYearsComponent implements OnInit, OnChanges {
       this.allYearsData = this.getAllYearsData(this.data);
       this.setDefaults(this.years);
       this.initialized = true;
+      this.datumFrameValue(this.currYear);
     }
   }
 
@@ -112,26 +120,30 @@ export class MapYearsComponent implements OnInit, OnChanges {
 
   datumFrameValue(index?: number) {
     if (this.filterYears && index !== null) {
-      return (datum: GeoJSON.Feature<GeoJSON.Geometry>) => {
-        let yearVals = this.data[index];
-        let countryVal = yearVals.find((countryCount) => {
-          const datumName = datum.properties.name as string;
-          const searchTerm = this.getMappedCountryName(countryCount.Country);
-          return datumName.search(searchTerm) > -1;
-        });
-        datum.properties.ShowIds = countryVal?.ShowIds;
-        return +(countryVal?.Count ?? 0);
-      };
+      this.datumFrameFnSubject.next(
+        ((datum: GeoJSON.Feature<GeoJSON.Geometry>) => {
+          let yearVals = this.data[index];
+          let countryVal = yearVals.find((countryCount) => {
+            const datumName = datum.properties.name as string;
+            const searchTerm = this.getMappedCountryName(countryCount.Country);
+            return datumName.search(searchTerm) > -1;
+          });
+          datum.properties.ShowIds = countryVal?.ShowIds;
+          return +(countryVal?.Count ?? 0);
+        }).bind(this)
+      );
     } else {
-      return (datum: GeoJSON.Feature<GeoJSON.Geometry>) => {
-        let countryVal = this.allYearsData?.find((countryCount) => {
-          const datumName = datum.properties.name as string;
-          const searchTerm = this.getMappedCountryName(countryCount.Country);
-          return datumName.search(searchTerm) > -1;
-        });
-        datum.properties.ShowIds = countryVal?.ShowIds;
-        return +(countryVal?.Count ?? 0);
-      };
+      this.datumFrameFnSubject.next(
+        ((datum: GeoJSON.Feature<GeoJSON.Geometry>) => {
+          let countryVal = this.allYearsData?.find((countryCount) => {
+            const datumName = datum.properties.name as string;
+            const searchTerm = this.getMappedCountryName(countryCount.Country);
+            return datumName.search(searchTerm) > -1;
+          });
+          datum.properties.ShowIds = countryVal?.ShowIds;
+          return +(countryVal?.Count ?? 0);
+        }).bind(this)
+      );
     }
   }
 
@@ -148,6 +160,7 @@ export class MapYearsComponent implements OnInit, OnChanges {
     }
 
     this.currYear = this.rangeVal;
+    this.datumFrameValue(this.currYear);
   }
 
   startAnimation() {
@@ -163,7 +176,7 @@ export class MapYearsComponent implements OnInit, OnChanges {
       this.nextNearest(this.rangeVal + 1);
       setTimeout(() => {
         this.animateFrame();
-      }, 500);
+      }, 750);
     } else {
       this.animating = false;
     }
@@ -185,5 +198,9 @@ export class MapYearsComponent implements OnInit, OnChanges {
   updateFilterYears(evt: Event) {
     this.filterYears = (evt.target as HTMLInputElement).checked;
     this.filterYearsChange.emit(this.filterYears);
+  }
+
+  onMapInit() {
+    this.resetData();
   }
 }

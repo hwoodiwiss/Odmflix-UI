@@ -12,7 +12,7 @@
     ></ofui-pie-chart>
   </div>
   <div class="col">
-    <h4 class="display-4 text-muted">Top 10 Actors</h4>
+    <h4 class="display-4 text-muted">Top {{ actorCounts?.length }} Actors</h4>
     <ofui-polar-area-chart
       *ngIf="actorCounts !== null"
       [dataGenerator]="getActorCounts.bind(this)"
@@ -24,7 +24,7 @@
 <div class="row bottom">
   <div class="col">
     <h4 class="display-4 text-muted">
-      Years Added {{ compareRelease ? "Vs Years Released" : "" }}
+      Years Added {{ overTime ? "Vs Years Released" : "" }}
     </h4>
     <ofui-bar-chart
       [horizontal]="true"

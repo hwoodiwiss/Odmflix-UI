@@ -1,7 +1,8 @@
 <div *ngIf="initialized" class="row">
   <ofui-map-chart
-    [valueMapper]="datumFrameValue(currYear)"
+    [valueMapper$]="datumFrameFnObservable"
     (onFeatureClick)="bubbleEvent($event)"
+    (onInitialised)="onMapInit()"
   ></ofui-map-chart>
   <div class="form-check">
     <input

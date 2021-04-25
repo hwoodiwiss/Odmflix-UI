@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from "@angular/core";
+import { Subject } from "rxjs";
 import { ActorCount } from "src/app/models/actor-count";
 import { Show } from "src/app/models/show";
 import { ActorsApiService } from "src/app/services/actors-api.service";
@@ -10,13 +11,13 @@ import { ActorsApiService } from "src/app/services/actors-api.service";
 })
 export class YearCountryDataComponent implements OnInit {
   @Input() showData: Show[];
-  @Input() compareRelease: boolean = false;
-  totalShows: number;
+  @Input() overTime: boolean = false;
+  @Input() actorCounts: ActorCount[] = null;
 
+  totalShows: number;
   ratingCounts: { [rating: string]: number };
-  actorCounts: ActorCount[] = null;
-  yearAddedCounts: { [rating: string]: number };
-  yearReleasedCounts: { [rating: string]: number };
+  yearAddedCounts: { [year: string]: number };
+  yearReleasedCounts: { [year: string]: number };
 
   initComplete: boolean = false;
   constructor(private actorsApi: ActorsApiService) {}
@@ -115,7 +116,7 @@ export class YearCountryDataComponent implements OnInit {
       addedData.data.push(this.yearAddedCounts[year]);
     }
 
-    if (this.compareRelease) {
+    if (this.overTime) {
       let releasedData = {
         label: "Year Released",
         data: [],
@@ -130,7 +131,7 @@ export class YearCountryDataComponent implements OnInit {
 
   getYearLabels() {
     let labelsArr = [];
-    if (this.compareRelease) {
+    if (this.overTime) {
       const addedYears = Object.keys(this.yearAddedCounts).reverse();
       const releasedYears = Object.keys(this.yearReleasedCounts).reverse();
       const labelsArrDupes = [...addedYears, ...releasedYears];
