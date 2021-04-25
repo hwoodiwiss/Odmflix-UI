@@ -59,6 +59,16 @@
     </ngb-accordion>
   </div>
 </div>
+<div *ngIf="compareOverTime" class="row bottom">
+  <div class="col">
+    <h4 class="display-4 text-muted">Rating Trends (%)</h4>
+    <ofui-line-chart
+      [dataGenerator]="getRatingYearData.bind(this)"
+      [labelGenerator]="getRatingYearLabels.bind(this)"
+    >
+    </ofui-line-chart>
+  </div>
+</div>
 <div class="row bottom">
   <div class="col">
     <h4 class="display-4 text-muted">
@@ -72,7 +82,7 @@
     </ofui-bar-chart>
   </div>
 </div>
-<div class="row">
+<div class="row" *ngIf="compareOverTime">
   <div class="col">
     <h4 class="display-4 text-muted">Show Data</h4>
     <ngb-accordion #acc="ngbAccordion" (shown)="allShowsShown()">

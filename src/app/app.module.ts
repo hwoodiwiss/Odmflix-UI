@@ -15,6 +15,7 @@ import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { OverTimePageComponent } from "./over-time-page/over-time-page.component";
 import { PieChartComponent } from "./charts/base/pie-chart/pie-chart.component";
 import { BarChartComponent } from "./charts/base/bar-chart/bar-chart.component";
+import { LineChartComponent } from "./charts/base/line-chart/line-chart.component";
 import { PolarAreaChartComponent } from "./charts/base/polar-area-chart/polar-area-chart.component";
 import { ShowDataComponent } from "./shared/show-data/show-data.component";
 import { Chart, registerables } from "chart.js";
@@ -36,6 +37,7 @@ Chart.register(...registerables);
     PolarAreaChartComponent,
     ShowDataComponent,
     ShowsTableComponent,
+    LineChartComponent,
   ],
   imports: [
     BrowserModule,

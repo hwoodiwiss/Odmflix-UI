@@ -7,8 +7,9 @@ import {
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { Subject } from "rxjs";
 import { ActorCount } from "src/app/models/actor-count";
-import { RatingCount } from "src/app/models/rating-count";
+import { ByRating, RatingCount } from "src/app/models/rating-count";
 import { Show } from "src/app/models/show";
+import { YearCount, YearTotal } from "src/app/models/year-count";
 import { ActorApiService } from "src/app/services/actors-api.service";
 
 @Component({
@@ -24,6 +25,8 @@ export class ShowDataComponent implements OnInit {
   @Input() actorCounts: ActorCount[] = null;
   @Input() typeCounts: { [rating: string]: number } = null;
   @Input() ratingCounts: RatingCount[] = null;
+  @Input() ratingYearCounts: ByRating<YearCount> = null;
+  @Input() ratingYearTotals: YearTotal[] = null;
 
   totalShows: number;
   yearAddedCounts: { [year: string]: number };
@@ -221,5 +224,29 @@ export class ShowDataComponent implements OnInit {
 
   allShowsShown() {
     this.showDataSubject.next(this.showData);
+  }
+
+  getRatingYearData() {
+    const datasets = [];
+    Object.keys(this.ratingYearCounts).forEach((rating) => {
+      let addedData = {
+        label: rating,
+        data: [],
+      };
+      datasets.push(addedData);
+
+      addedData.data = this.ratingYearTotals.map((ratingYear) => {
+        let count = this.ratingYearCounts[rating].find(
+          (item) => item.Year == ratingYear.Year
+        )?.Count;
+        return count ? (count / ratingYear.Total) * 100 : null;
+      });
+    });
+
+    return datasets;
+  }
+
+  getRatingYearLabels() {
+    return this.ratingYearTotals.map((item) => item.Year);
   }
 }
