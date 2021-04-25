@@ -44,6 +44,7 @@ export class ShowsTableComponent implements OnInit {
 
   refreshShows() {
     this.pageData = this.data
+      .sort((a, b) => a.Title.localeCompare(b.Title))
       .slice(
         (this.page - 1) * this.pageSize,
         (this.page - 1) * this.pageSize + this.pageSize
