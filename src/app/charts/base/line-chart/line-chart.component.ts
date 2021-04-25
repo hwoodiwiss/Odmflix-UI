@@ -28,6 +28,10 @@ export class LineChartComponent implements OnInit {
           x: {
             beginAtZero: true,
           },
+          y: {
+            min: 0,
+            max: 100,
+          },
         },
       },
     });

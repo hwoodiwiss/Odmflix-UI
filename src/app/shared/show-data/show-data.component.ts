@@ -9,8 +9,10 @@ import { Subject } from "rxjs";
 import { ActorCount } from "src/app/models/actor-count";
 import { ByRating, RatingCount } from "src/app/models/rating-count";
 import { Show } from "src/app/models/show";
+import { ByType, TypeCount } from "src/app/models/type";
 import { YearCount, YearTotal } from "src/app/models/year-count";
 import { ActorApiService } from "src/app/services/actors-api.service";
+import { RatingApiService } from "src/app/services/ratings-api.service";
 
 @Component({
   selector: "ofui-show-data",
@@ -27,6 +29,8 @@ export class ShowDataComponent implements OnInit {
   @Input() ratingCounts: RatingCount[] = null;
   @Input() ratingYearCounts: ByRating<YearCount> = null;
   @Input() ratingYearTotals: YearTotal[] = null;
+  @Input() typeYearCounts: ByType<YearCount> = null;
+  @Input() typeYearTotals: YearTotal[] = null;
 
   totalShows: number;
   yearAddedCounts: { [year: string]: number };
@@ -44,7 +48,10 @@ export class ShowDataComponent implements OnInit {
   selectedRatingShowsSubject = new Subject<Show[]>();
   $selectedRatingShows = this.selectedRatingShowsSubject.asObservable();
 
-  constructor(private actorsApi: ActorApiService) {}
+  constructor(
+    private actorsApi: ActorApiService,
+    private ratingsApi: RatingApiService
+  ) {}
 
   ngOnInit(): void {
     this.totalShows = this.showData.length;
@@ -53,6 +60,10 @@ export class ShowDataComponent implements OnInit {
     this.setupDateReleasedCounts();
     this.setupActorCounts();
     this.setupTypeCounts();
+    this.setupTypeYearCounts();
+    this.setupTypeYearTotals();
+    this.setupRatingYearCounts();
+    this.setupRatingYearTotals();
     this.initComplete = true;
   }
 
@@ -117,6 +128,72 @@ export class ShowDataComponent implements OnInit {
         .subscribe((data) => {
           this.actorCounts = data;
         });
+    }
+  }
+
+  setupRatingYearCounts() {
+    if (this.ratingYearCounts === null) {
+      this.ratingsApi
+        .countsByYearForShows(this.showData.map((item) => item.Id))
+        .subscribe((data) => {
+          this.ratingYearCounts = data;
+        });
+    }
+  }
+
+  setupRatingYearTotals() {
+    if (this.ratingYearTotals === null) {
+      this.ratingsApi
+        .totalsByYearForShows(this.showData.map((item) => item.Id))
+        .subscribe((data) => {
+          this.ratingYearTotals = data;
+        });
+    }
+  }
+
+  setupTypeYearCounts() {
+    if (this.typeYearCounts === null) {
+      this.typeYearCounts = this.showData
+        .map((item) => item.ShowType)
+        .reduce((acc, type) => {
+          acc[type] = [];
+          this.showData
+            .filter((f) => f.ShowType == type)
+            .forEach((item) => {
+              let foundItem = acc[type].find(
+                (f) => f.Year === item.ReleaseYear
+              );
+              if (foundItem) {
+                foundItem.Count++;
+              } else {
+                acc[type].push({
+                  Year: item.ReleaseYear,
+                  Count: 1,
+                });
+              }
+            });
+          return acc;
+        }, Object.create(null) as ByType<YearCount>);
+    }
+  }
+
+  setupTypeYearTotals() {
+    if (this.typeYearTotals === null) {
+      this.typeYearTotals = this.showData
+        .map((item) => item.ReleaseYear)
+        .reduce((acc, item) => {
+          let foundItem = acc.find((f) => f.Year == item);
+          if (foundItem) {
+            foundItem.Total++;
+          } else {
+            acc.push({
+              Year: item,
+              Total: 1,
+            });
+          }
+          return acc;
+        }, new Array<YearTotal>())
+        .sort((a, b) => a.Year - b.Year);
     }
   }
 
@@ -248,5 +325,33 @@ export class ShowDataComponent implements OnInit {
 
   getRatingYearLabels() {
     return this.ratingYearTotals.map((item) => item.Year);
+  }
+
+  getTypeYearData() {
+    const datasets = [];
+    Object.keys(this.typeYearCounts).forEach((type) => {
+      let addedData = {
+        label: type,
+        data: [],
+      };
+      datasets.push(addedData);
+
+      addedData.data = this.typeYearTotals.map((typeYear) => {
+        let count = this.typeYearCounts[type].find(
+          (item) => item.Year == typeYear.Year
+        )?.Count;
+        return count ? (count / typeYear.Total) * 100 : null;
+      });
+    });
+
+    return datasets;
+  }
+
+  getTypeYearLabels() {
+    return this.typeYearTotals.map((item) => item.Year);
+  }
+
+  ratingYearDataLoaded() {
+    return this.ratingYearCounts !== null && this.ratingYearTotals !== null;
   }
 }

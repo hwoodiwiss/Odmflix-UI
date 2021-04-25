@@ -10,7 +10,6 @@ import { MapChartComponent } from "./charts/base/map-chart/map-chart.component";
 import { HttpClientModule } from "@angular/common/http";
 import { FormsModule } from "@angular/forms";
 import { MapYearsComponent } from "./charts/map-years/map-years.component";
-import { CountriesPageComponent } from "./countries-page/countries-page.component";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { OverTimePageComponent } from "./over-time-page/over-time-page.component";
 import { PieChartComponent } from "./charts/base/pie-chart/pie-chart.component";
@@ -30,7 +29,6 @@ Chart.register(...registerables);
     NotFoundPageComponent,
     MapChartComponent,
     MapYearsComponent,
-    CountriesPageComponent,
     OverTimePageComponent,
     PieChartComponent,
     BarChartComponent,

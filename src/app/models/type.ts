@@ -3,6 +3,10 @@ export interface Type {
   Name: string;
 }
 
+export interface ByType<T> {
+  [Type: string]: T[];
+}
+
 export interface TypeCount {
   Type: string;
   Count: number;

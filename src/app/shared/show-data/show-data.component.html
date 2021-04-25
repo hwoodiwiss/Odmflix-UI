@@ -12,6 +12,16 @@
     ></ofui-pie-chart>
   </div>
 </div>
+<div *ngIf="compareTypes && compareOverTime" class="row bottom">
+  <div class="col">
+    <h4 class="display-4 text-muted">Types By Release Year (%)</h4>
+    <ofui-line-chart
+      [dataGenerator]="getTypeYearData.bind(this)"
+      [labelGenerator]="getTypeYearLabels.bind(this)"
+    >
+    </ofui-line-chart>
+  </div>
+</div>
 <div class="row bottom">
   <div class="col-6 left">
     <h4 class="display-4 text-muted">Ratings</h4>
@@ -59,7 +69,7 @@
     </ngb-accordion>
   </div>
 </div>
-<div *ngIf="compareOverTime" class="row bottom">
+<div *ngIf="compareOverTime && ratingYearDataLoaded()" class="row bottom">
   <div class="col">
     <h4 class="display-4 text-muted">Rating Trends (%)</h4>
     <ofui-line-chart
@@ -82,7 +92,7 @@
     </ofui-bar-chart>
   </div>
 </div>
-<div class="row" *ngIf="compareOverTime">
+<div class="row">
   <div class="col">
     <h4 class="display-4 text-muted">Show Data</h4>
     <ngb-accordion #acc="ngbAccordion" (shown)="allShowsShown()">

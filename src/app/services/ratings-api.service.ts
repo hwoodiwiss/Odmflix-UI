@@ -30,4 +30,18 @@ export class RatingApiService {
       `${this.config.ApiUri}/Rating/TotalsByYear`
     );
   }
+
+  public countsByYearForShows(showIds: number[]) {
+    return this.httpClient.post<ByRating<YearCount>>(
+      `${this.config.ApiUri}/Rating/CountsByYearForShows`,
+      showIds
+    );
+  }
+
+  public totalsByYearForShows(showIds: number[]) {
+    return this.httpClient.post<YearTotal[]>(
+      `${this.config.ApiUri}/Rating/TotalsByYearForShows`,
+      showIds
+    );
+  }
 }
