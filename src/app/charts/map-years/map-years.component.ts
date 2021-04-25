@@ -183,12 +183,14 @@ export class MapYearsComponent implements OnInit, OnChanges {
   }
 
   bubbleEvent(clickedItems: MapSelection[]) {
-    this.animating = false;
-    this.onFeatureClick.emit({
-      year: this.filterYears ? this.rangeVal : null,
-      country: clickedItems[0].country,
-      showIds: clickedItems[0].showIds,
-    });
+    if (clickedItems !== undefined && clickedItems.length > 0) {
+      this.animating = false;
+      this.onFeatureClick.emit({
+        year: this.filterYears ? this.rangeVal : null,
+        country: clickedItems[0].country,
+        showIds: clickedItems[0].showIds,
+      });
+    }
   }
 
   getMappedCountryName(countryName: string) {

@@ -202,11 +202,15 @@ export class ShowDataComponent implements OnInit {
     return labelsArr;
   }
 
-  ratingSelected(index: number) {
-    this.selectedRating = this.ratingCounts[index];
-    this.selectedRatingShowsSubject.next(
-      this.showData.filter((item) => item.Rating === this.selectedRating.Rating)
-    );
+  ratingSelected(index?: number) {
+    if (index !== undefined) {
+      this.selectedRating = this.ratingCounts[index];
+      this.selectedRatingShowsSubject.next(
+        this.showData.filter(
+          (item) => item.Rating === this.selectedRating.Rating
+        )
+      );
+    }
   }
 
   ratingShowsShown() {
