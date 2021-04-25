@@ -2,8 +2,10 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  EventEmitter,
   Input,
   OnInit,
+  Output,
   ViewChild,
 } from "@angular/core";
 import { Chart } from "chart.js";
@@ -19,6 +21,7 @@ export class PieChartComponent implements OnInit, AfterViewInit {
   chart: Chart<"doughnut", number[], string>;
   @Input() dataGenerator: () => { label: string; data: number[] };
   @Input() labelGenerator: () => string[];
+  @Output() elementClicked = new EventEmitter<number>();
 
   constructor() {}
 
@@ -44,5 +47,16 @@ export class PieChartComponent implements OnInit, AfterViewInit {
     };
 
     return { ...chartDatasetConfig, ...dataset };
+  }
+
+  handleClick(event: Event) {
+    let interactionItems = this.chart.getElementsAtEventForMode(
+      event,
+      "nearest",
+      { intersect: true },
+      true
+    );
+
+    this.elementClicked.emit(interactionItems[0]?.index);
   }
 }
