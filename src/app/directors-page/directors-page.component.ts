@@ -36,7 +36,7 @@ export class DirectorsPageComponent implements OnInit {
       map((term) =>
         this.directors
           .filter((director) => new RegExp(term, "mi").test(director.Name))
-          .slice(0, 10)
+          .slice(0, 20)
       )
     );
 
