@@ -19,6 +19,13 @@ export class RatingApiService {
     );
   }
 
+  public countsForShows(showIds: number[]) {
+    return this.httpClient.post<RatingCount[]>(
+      `${this.config.ApiUri}/Rating/CountsForShows`,
+      showIds
+    );
+  }
+
   public countsByYear() {
     return this.httpClient.get<ByRating<YearCount>>(
       `${this.config.ApiUri}/Rating/CountsByYear`
