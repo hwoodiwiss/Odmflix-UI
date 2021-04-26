@@ -340,7 +340,7 @@ export class ShowDataComponent implements OnInit {
         let count = this.typeYearCounts[type].find(
           (item) => item.Year == typeYear.Year
         )?.Count;
-        return count ? (count / typeYear.Total) * 100 : null;
+        return count ? (count / typeYear.Total) * 100 : 0;
       });
     });
 
