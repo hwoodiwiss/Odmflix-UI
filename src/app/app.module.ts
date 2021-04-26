@@ -20,6 +20,7 @@ import { ShowDataComponent } from "./shared/show-data/show-data.component";
 import { Chart, registerables } from "chart.js";
 import { ShowsTableComponent } from "./shared/shows-table/shows-table.component";
 import { DirectorsPageComponent } from './directors-page/directors-page.component';
+import { DurationsPageComponent } from './durations-page/durations-page.component';
 
 Chart.register(...registerables);
 
@@ -38,6 +39,7 @@ Chart.register(...registerables);
     ShowsTableComponent,
     LineChartComponent,
     DirectorsPageComponent,
+    DurationsPageComponent,
   ],
   imports: [
     BrowserModule,
