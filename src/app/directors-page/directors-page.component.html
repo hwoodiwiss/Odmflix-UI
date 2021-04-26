@@ -1,0 +1,24 @@
+<div class="row">
+  <div class="col">
+    <label for="directors-search">Search for a director:</label>
+    <input
+      id="directors-search"
+      type="text"
+      class="form-control"
+      [(ngModel)]="model"
+      (ngModelChange)="directorChanged()"
+      [ngbTypeahead]="search"
+      [inputFormatter]="directorFormatter"
+      [resultFormatter]="directorFormatter"
+      [editable]="false"
+    />
+  </div>
+</div>
+
+<ofui-show-data
+  id="details"
+  *ngIf="directorShows != null"
+  [showData]="directorShows"
+  [compareOverTime]="false"
+  [compareTypes]="true"
+></ofui-show-data>

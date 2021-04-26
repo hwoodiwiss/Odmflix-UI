@@ -19,6 +19,7 @@ import { PolarAreaChartComponent } from "./charts/base/polar-area-chart/polar-ar
 import { ShowDataComponent } from "./shared/show-data/show-data.component";
 import { Chart, registerables } from "chart.js";
 import { ShowsTableComponent } from "./shared/shows-table/shows-table.component";
+import { DirectorsPageComponent } from './directors-page/directors-page.component';
 
 Chart.register(...registerables);
 
@@ -36,6 +37,7 @@ Chart.register(...registerables);
     ShowDataComponent,
     ShowsTableComponent,
     LineChartComponent,
+    DirectorsPageComponent,
   ],
   imports: [
     BrowserModule,
